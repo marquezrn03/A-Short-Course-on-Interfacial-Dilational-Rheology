@@ -13,18 +13,34 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
+        /* Base Theme Variables (Sky Blue) */
         :root {
-            --bg-color: #f0f9ff; --text-color-main: #0369a1; --text-color-header: #0c4a6e;
-            --text-color-accent: #075985; --text-color-subtle: #0ea5e9; --border-color-light: #e0f2fe;
-            --border-color-medium: #bae6fd; --border-color-dark: #7dd3fc; --accent-color: #38bdf8;
-            --highlight-bg: #e0f2fe; --vis-bg-color: #f8fafc; --vis-border-color: #cbd5e1;
-            --header-grad-from: #0ea5e9; --header-grad-to: #0369a1;
+            --bg-color: #f0f9ff; /* sky-50 */
+            --text-color-main: #0369a1; /* sky-700 */
+            --text-color-header: #0c4a6e; /* sky-900 */
+            --text-color-accent: #075985; /* sky-800 */
+            --text-color-subtle: #0ea5e9; /* sky-500 */
+            --border-color-light: #e0f2fe; /* sky-100 */
+            --border-color-medium: #bae6fd; /* sky-200 */
+            --border-color-dark: #7dd3fc; /* sky-300 */
+            --accent-color: #38bdf8; /* sky-400 */
+            --highlight-bg: #e0f2fe; /* sky-100 */
+            --vis-bg-color: #f8fafc; /* slate-50 */
+            --vis-border-color: #cbd5e1; /* slate-300 */
+            --header-grad-from: #0ea5e9; /* sky-500 */
+            --header-grad-to: #0369a1; /* sky-700 */
         }
-        html { scroll-padding-top: 76px; }
+
+        /* Basic Setup & Smooth Scroll */
+        html { scroll-padding-top: 76px; /* Adjust for sticky header height */ }
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; color: var(--text-color-main); background-color: var(--bg-color); font-size: 1rem; }
-        main.container { padding-top: 2rem; padding-bottom: 1rem; }
+        main.container { padding-top: 2rem; padding-bottom: 1rem; } /* Add padding to main content */
+
+        /* Fade-in Animation */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .dynamic-content { opacity: 0; animation: fadeIn 0.7s ease-out forwards; }
+
+        /* Form Elements */
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-color-accent); font-size: 0.9rem; }
         input[type="range"], select { width: 100%; padding: 0.5rem; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; background-color: white; font-size: 0.9rem; transition: border-color 0.2s ease; }
         input[type="range"]:focus, select:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--highlight-bg); }
@@ -35,50 +51,91 @@
         button:hover { background-color: var(--border-color-dark); }
         button:active { transform: scale(0.98); }
         .output-box { background-color: var(--highlight-bg); border: 1px solid var(--border-color-medium); padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-top: 0.5rem; text-align: center; font-weight: 500; font-size: 0.85rem; color: var(--text-color-accent); min-height: 2.5rem; display: flex; align-items: center; justify-content: center; }
+
+        /* Containers */
         .interactive-container { background-color: #ffffff; border: 1px solid var(--border-color-light); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
         .visualization-box { min-height: 200px; background-color: var(--vis-bg-color); border: 1px dashed var(--vis-border-color); border-radius: 0.375rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; margin-top: 1rem; text-align: center; position: relative; overflow: hidden; transition: background-color 0.3s ease; font-size: 0.9rem; }
         .visualization-box svg { display: block; margin: auto; max-width: 100%; height: auto; }
+
+        /* Table Styling */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
         th, td { border: 1px solid var(--border-color-medium); padding: 0.6rem; text-align: left; vertical-align: top; }
-        th { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); position: static; z-index: 5; }
-        tbody tr:nth-child(odd) { background-color: #f8fafc; }
+        th { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); position: static; /* Removed sticky for simplicity */ z-index: 5; }
+        tbody tr:nth-child(odd) { background-color: #f8fafc; /* slate-50 */ }
         tbody tr:hover { background-color: var(--highlight-bg); }
         tbody tr.category-row td { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); }
-        @media (max-width: 768px) { #measurement-techniques-overview table { min-width: 800px; } #measurement-techniques-overview th, #measurement-techniques-overview td { white-space: nowrap; padding: 0.4rem; font-size: 0.8rem; } #measurement-techniques-overview tr.category-row td { white-space: nowrap; } }
+        /* Responsive Table Scroll */
+        @media (max-width: 768px) {
+            #measurement-techniques-overview table { min-width: 800px; /* Force horizontal scroll */ }
+            #measurement-techniques-overview th, #measurement-techniques-overview td { white-space: nowrap; padding: 0.4rem; font-size: 0.8rem; }
+            #measurement-techniques-overview tr.category-row td { white-space: nowrap; }
+        }
+
+        /* Typography */
         h1, h2, h3, h4 { color: var(--text-color-header); font-weight: 700; line-height: 1.3; }
-        h1 { font-size: 2.25rem; } h2 { font-size: 1.75rem; border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
-        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem; } h4 { font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color-accent); }
+        h1 { font-size: 2.25rem; /* text-3xl */ }
+        h2 { font-size: 1.75rem; /* text-2xl */ border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
+        h3 { font-size: 1.3rem; /* text-xl */ margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        h4 { font-size: 1.1rem; /* text-lg */ margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color-accent); }
         p, li { color: var(--text-color-main); line-height: 1.7; margin-bottom: 1.25rem; font-size: 0.95rem; text-align: justify; }
         ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
         strong { color: var(--text-color-accent); font-weight: 600; }
-        code { background-color: #e0f2fe; color: #0c4a6e; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+        code { background-color: #e0f2fe; /* sky-100 */ color: #0c4a6e; /* sky-900 */ padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
         blockquote { border-left: 4px solid var(--accent-color); padding: 0.75rem 1rem; margin: 1.5rem 0; font-style: italic; color: var(--text-color-subtle); background-color: var(--highlight-bg); font-size: 0.95rem; }
         .section-bg-white { background-color: #ffffff; }
+
+        /* Footer */
         footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color-medium); }
         footer p { font-size: 0.8rem; line-height: 1.5; text-align: center; color: var(--text-color-main);}
-        footer a { color: var(--text-color-subtle); text-decoration: underline; } footer a:hover { color: var(--text-color-header); }
-        .instructional-text { font-size: 0.875rem; color: var(--text-color-subtle); margin-top: 0.5rem; margin-bottom: 1rem; text-align: center; }
-        .approximation-note { font-size: 0.75rem; color: #ef4444; text-align: center; margin-top: 0.5rem; font-style: italic; }
+        footer a { color: var(--text-color-subtle); text-decoration: underline; }
+        footer a:hover { color: var(--text-color-header); }
+
+        /* Helper Texts */
+        .instructional-text { font-size: 0.875rem; /* text-sm */ color: var(--text-color-subtle); margin-top: 0.5rem; margin-bottom: 1rem; text-align: center; }
+        .approximation-note { font-size: 0.75rem; color: #ef4444; /* red-500 */ text-align: center; margin-top: 0.5rem; font-style: italic; }
+
+        /* Figures & Captions */
         figure { margin: 1.5rem auto; text-align: center; }
         figure svg { max-width: 100%; height: auto; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; margin: 0 auto 0.5rem auto; display: block; background-color: var(--vis-bg-color); }
-        figcaption, .caption { font-size: 0.8rem; color: var(--text-color-subtle); margin-top: 0.25rem; text-align: center; }
+        figcaption, .caption { font-size: 0.8rem; /* text-xs */ color: var(--text-color-subtle); margin-top: 0.25rem; text-align: center; }
+
+        /* Equations */
         .equation { display: block; text-align: center; margin: 1.25rem auto; font-size: 1.1rem; }
-        .key-concept { border: 1px solid var(--border-color-medium); background-color: #f0f8ff; padding: 1rem; border-radius: 0.375rem; margin: 1.5rem 0; }
+
+        /* Key Concepts Box */
+        .key-concept { border: 1px solid var(--border-color-medium); background-color: #f0f8ff; /* aliceblue - slightly different */ padding: 1rem; border-radius: 0.375rem; margin: 1.5rem 0; }
         .key-concept strong { color: var(--text-color-header); }
-        .d3-plot .axis path, .d3-plot .axis line { fill: none; stroke: #94a3b8; shape-rendering: crispEdges; stroke-width: 1px; }
-        .d3-plot .axis text { font-size: 0.75rem; fill: #475569; font-family: sans-serif;}
-        .d3-plot .grid line { stroke: #e2e8f0; stroke-opacity: 0.7; shape-rendering: crispEdges; }
-        .d3-plot .grid path { stroke-width: 0; } .d3-plot .line { fill: none; stroke-width: 2px; } .d3-plot path { fill: none; }
-        .d3-plot .area-line { stroke: #22c55e; } .d3-plot .tension-line { stroke: #6366f1; } .d3-plot .speed-line { stroke: #06b6d4; }
-        .d3-plot .elastic-line { stroke: #3b82f6; } .d3-plot .viscous-line { stroke: #14b8a6; }
+
+        /* D3 Plot Styles */
+        .d3-plot .axis path, .d3-plot .axis line { fill: none; stroke: #94a3b8; /* slate-400 */ shape-rendering: crispEdges; stroke-width: 1px; }
+        .d3-plot .axis text { font-size: 0.75rem; /* text-xs */ fill: #475569; /* slate-600 */ font-family: sans-serif;}
+        .d3-plot .grid line { stroke: #e2e8f0; /* slate-200 */ stroke-opacity: 0.7; shape-rendering: crispEdges; }
+        .d3-plot .grid path { stroke-width: 0; }
+        .d3-plot .line { fill: none; stroke-width: 2px; }
+        .d3-plot path { fill: none; } /* Ensure paths default to no fill */
+        /* Specific line colors */
+        .d3-plot .area-line { stroke: #22c55e; } /* emerald-500 */
+        .d3-plot .tension-line { stroke: #6366f1; } /* indigo-500 */
+        .d3-plot .speed-line { stroke: #06b6d4; } /* cyan-500 */
+        .d3-plot .elastic-line { stroke: #3b82f6; } /* blue-500 */
+        .d3-plot .viscous-line { stroke: #14b8a6; } /* teal-500 */
         .plot-label { font-size: 0.75rem; fill: var(--text-color-accent); text-anchor: middle; font-family: sans-serif;}
-        .liquid-fill { fill: #bfdbfe; } .oil-fill { fill: #fef9c3; } .gas-fill { fill: #f1f5f9; }
-        .interface-line { stroke: var(--text-color-accent); stroke-width: 1.5px; } .geometry-stroke { stroke: #334155; } .geometry-fill { fill: #cbd5e1; }
-        .arrow-stroke { stroke: var(--text-color-header); stroke-width: 1.5px; } .schematic-text { font-size: 10px; fill: var(--text-color-main); font-family: sans-serif; }
+
+        /* Schematic SVG styles */
+        .liquid-fill { fill: #bfdbfe; /* blue-200 */ }
+        .oil-fill { fill: #fef9c3; /* yellow-100 */ }
+        .gas-fill { fill: #f1f5f9; /* slate-100 */ }
+        .interface-line { stroke: var(--text-color-accent); stroke-width: 1.5px; }
+        .geometry-stroke { stroke: #334155; /* slate-700 */ }
+        .geometry-fill { fill: #cbd5e1; /* slate-300 */ }
+        .arrow-stroke { stroke: var(--text-color-header); stroke-width: 1.5px; }
+        .schematic-text { font-size: 10px; fill: var(--text-color-main); font-family: sans-serif; }
         .schematic-label { font-size: 11px; fill: var(--text-color-header); font-weight: 500; font-family: sans-serif;}
         .pendant-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; }
-        .spinning-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; transition: all 0.2s ease-out; }
-        .capillary-tube { fill: #e2e8f0; stroke: #64748b; } .needle-tip { fill: #94a3b8; }
+        .spinning-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; transition: all 0.2s ease-out; /* Smooth length/pos changes */ }
+        .capillary-tube { fill: #e2e8f0; /* slate-200 */ stroke: #64748b; /* slate-500 */ }
+        .needle-tip { fill: #94a3b8; /* slate-400 */ }
+
     </style>
 </head>
 
@@ -125,8 +182,7 @@
             <figure>
                 <svg id="fig1-dilational-response" width="400" height="200" viewBox="0 0 400 200" aria-labelledby="fig1-title">
                     <title id="fig1-title">Dilational Oscillatory Response</title>
-                    <g id="dilational-plot-group"></g>
-                </svg>
+                    <g id="dilational-plot-group"></g> </svg>
                 <figcaption class="caption">Figure 1: Conceptual illustration of oscillatory strain (\(\Delta \ln A\), green) and the resulting stress response (\(\Delta \gamma\), indigo), showing the phase angle \(\varphi\).</figcaption>
             </figure>
 
@@ -219,15 +275,14 @@
                               <option value="S">Solid (S)</option>
                           </select>
                      </div>
-                     <div></div>
-                 </div>
+                     <div></div> </div>
                  <div class="visualization-box">
                      <div id="langmuir-plot-svg" class="w-full h-64 d3-plot"></div>
                      <p class="text-xs mt-2 caption">Conceptual \(\Pi\)-A isotherm (blue) and derived Elastic Modulus \(E'\) (red, dashed).</p>
                  </div>
              </div>
 
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.3 Oscillating Pendant Drop (OPD)</h3>
+             <h3 class="text-xl font-semibold mt-6 mb-2">3.3 Oscillating Pendant Drop (OPD)</h3>
             <p class="text-sm mb-3">Oscillates drop volume, analyzes shape via Young-Laplace equation to get \(A(t)\) and \(\gamma(t)\), yielding \(E^*\).</p>
             <figure>
                  <svg id="fig4-opd-schematic-static" width="150" height="150" viewBox="0 0 50 75" aria-labelledby="fig4-static-title">
@@ -238,16 +293,14 @@
                  <figcaption class="caption">Figure 4: Oscillating Pendant Drop (OPD) setup schematic.</figcaption>
             </figure>
             <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Widely used, commercially available.</li><li>Applicable to many systems.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Requires \(\gamma \gtrsim 1 \, mN/m\).</li><li>Assumes axisymmetry & Y-L validity.</li><li>Accuracy sensitive to image quality/fitting.</li><li>Limited frequency (\(< 2\) Hz).</li></ul></div></div>
-
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.4 Capillary Pressure Tensiometry</h3>
+             <h3 class="text-xl font-semibold mt-6 mb-2">3.4 Capillary Pressure Tensiometry</h3>
             <p class="text-sm mb-3">Measures pressure difference \(\Delta P\) across a small, near-spherical interface. Oscillates volume/area, relates dynamic \(\Delta P\) to \(E^*\) via Laplace equation (\(\Delta P = 2\gamma/R\)).</p>
             <figure>
                  <svg id="fig5-cap-pressure" width="400" height="150" viewBox="0 0 400 150" aria-labelledby="fig5-title"><title id="fig5-title">Capillary Pressure Method Schematics</title><text x="75" y="15" class="schematic-label" text-anchor="middle">Config 1</text><rect x="10" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="40" y="38" class="schematic-text" text-anchor="middle">Piezo</text><rect x="80" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="110" y="38" class="schematic-text" text-anchor="middle">Pressure</text><line x1="70" y1="35" x2="80" y2="35" stroke="black" /> <rect x="65" y="50" width="20" height="40" class="capillary-tube" /><circle cx="75" cy="110" r="20" class="oil-fill interface-line" /><text x="40" y="70" class="schematic-text">Liquid 1</text><text x="110" y="70" class="schematic-text">Liquid 2</text><text x="275" y="15" class="schematic-label" text-anchor="middle">Config 2</text><rect x="210" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="240" y="38" class="schematic-text" text-anchor="middle">Pressure</text><rect x="310" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="340" y="38" class="schematic-text" text-anchor="middle">Piezo</text><rect x="240" y="50" width="20" height="40" class="capillary-tube" /> <rect x="300" y="50" width="20" height="40" class="capillary-tube" /><circle cx="310" cy="110" r="20" class="gas-fill interface-line" /><text x="210" y="70" class="schematic-text">Liquid</text><text x="310" y="70" class="schematic-text">Gas Bubble</text></svg>
                  <figcaption class="caption">Figure 5: Conceptual schematics of capillary pressure method configurations.</figcaption>
             </figure>
              <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Suitable for small, spherical interfaces.</li><li>Direct pressure-tension link (Laplace).</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Difficult control/measurement.</li><li>Requires sensitive pressure transducer.</li><li>Assumes perfect sphericity.</li><li>Low frequency (\(< 1\) Hz).</li><li>Requires \(\gamma \gtrsim 1 \, mN/m\).</li></ul></div></div>
-
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.5 Oscillating Spinning Drop (OSDIR)</h3>
+             <h3 class="text-xl font-semibold mt-6 mb-2">3.5 Oscillating Spinning Drop (OSDIR)</h3>
             <p class="text-sm mb-3">Unique technique for <strong>low and ultra-low \(\gamma\)</strong> systems. Modulates rotation speed \(\omega_{rot}\) of an elongated drop, calculates dynamic \(\gamma(t)\) from shape (often via Vonnegut approx.), yielding a combined modulus, approximately \(E+G\).</p>
             <figure>
                  <svg id="fig6-osdir" width="400" height="150" viewBox="0 0 400 150" aria-labelledby="fig6-title"><title id="fig6-title">Oscillating Spinning Drop Schematic</title><rect x="10" y="50" width="380" height="50" rx="25" ry="25" class="capillary-tube" /><text x="200" y="45" class="schematic-text" text-anchor="middle">Rotating Capillary ($\omega_{rot}(t)$)</text><rect id="osdir-drop-rect-static" x="50" y="60" width="300" height="30" rx="15" ry="15" class="spinning-drop" /><text x="200" y="78" class="schematic-text" text-anchor="middle">Elongated Drop</text><path d="M 30 40 A 30 30 0 0 1 60 25" fill="none" class="arrow-stroke" marker-end="url(#arrowhead)" /><path d="M 370 110 A 30 30 0 0 1 340 125" fill="none" class="arrow-stroke" marker-end="url(#arrowhead)" /><text x="200" y="130" class="schematic-text" text-anchor="middle">Rotation Axis</text></svg>
@@ -273,56 +326,56 @@
         </section>
 
         <section id="recent-advances" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">4. Recent Advances in Dilational Methods</h2>
-            <p>Research continues to refine techniques and extend capabilities, including probing thermal fluctuations and using microfluidic platforms.</p>
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.1 Probing Thermal Fluctuations</h3>
-            <p class="text-sm">Techniques like AFM or DWS analyze naturally occurring thermal capillary waves to probe interfacial viscoelasticity (\(E^*, G^*\)) non-invasively, especially at high frequencies.</p>
-            <figure>
-                 <svg id="fig7-afm-setup" width="400" height="200" viewBox="0 0 400 200" aria-labelledby="fig7-title"><title id="fig7-title">AFM Probing Bubble Fluctuations</title><rect x="50" y="150" width="300" height="30" class="geometry-fill" stroke="black" /><text x="200" y="170" class="schematic-text" text-anchor="middle">Substrate</text><rect x="50" y="50" width="300" height="100" class="liquid-fill" opacity="0.5" /><text x="60" y="70" class="schematic-text">Liquid</text><path d="M 150 150 Q 150 100 200 100 Q 250 100 250 150 Z" class="gas-fill interface-line" /><text x="200" y="130" class="schematic-text" text-anchor="middle">Bubble</text><rect x="190" y="20" width="20" height="50" class="geometry-fill geometry-stroke" /><text x="220" y="45" class="schematic-text">AFM Head</text><line x1="200" y1="70" x2="200" y2="90" stroke="black" /> <path d="M 200 90 L 180 100 L 220 100 Z" fill="#fca5a5" /> <text x="200" y="85" class="schematic-text" text-anchor="middle">Tip</text><path d="M 180 100 C 190 102, 210 102, 220 100" fill="none" stroke="red" stroke-dasharray="1 1" /><text x="200" y="115" class="schematic-text" text-anchor="middle" fill="red">Fluctuations</text></svg>
-                 <figcaption class="caption">Figure 7: Conceptual schematic of AFM probing thermal fluctuations.</figcaption>
-            </figure>
+             <h2 class="text-2xl font-bold">4. Recent Advances in Dilational Methods</h2>
+             <p>Research continues to refine techniques and extend capabilities, including probing thermal fluctuations and using microfluidic platforms.</p>
+             <h3 class="text-xl font-semibold mt-4 mb-2">4.1 Probing Thermal Fluctuations</h3>
+             <p class="text-sm">Techniques like AFM or DWS analyze naturally occurring thermal capillary waves to probe interfacial viscoelasticity (\(E^*, G^*\)) non-invasively, especially at high frequencies.</p>
+             <figure>
+                  <svg id="fig7-afm-setup" width="400" height="200" viewBox="0 0 400 200" aria-labelledby="fig7-title"><title id="fig7-title">AFM Probing Bubble Fluctuations</title><rect x="50" y="150" width="300" height="30" class="geometry-fill" stroke="black" /><text x="200" y="170" class="schematic-text" text-anchor="middle">Substrate</text><rect x="50" y="50" width="300" height="100" class="liquid-fill" opacity="0.5" /><text x="60" y="70" class="schematic-text">Liquid</text><path d="M 150 150 Q 150 100 200 100 Q 250 100 250 150 Z" class="gas-fill interface-line" /><text x="200" y="130" class="schematic-text" text-anchor="middle">Bubble</text><rect x="190" y="20" width="20" height="50" class="geometry-fill geometry-stroke" /><text x="220" y="45" class="schematic-text">AFM Head</text><line x1="200" y1="70" x2="200" y2="90" stroke="black" /> <path d="M 200 90 L 180 100 L 220 100 Z" fill="#fca5a5" /> <text x="200" y="85" class="schematic-text" text-anchor="middle">Tip</text><path d="M 180 100 C 190 102, 210 102, 220 100" fill="none" stroke="red" stroke-dasharray="1 1" /><text x="200" y="115" class="schematic-text" text-anchor="middle" fill="red">Fluctuations</text></svg>
+                  <figcaption class="caption">Figure 7: Conceptual schematic of AFM probing thermal fluctuations.</figcaption>
+             </figure>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.2 Microfluidic and Combined Techniques</h3>
-            <p class="text-sm">Miniaturized platforms allow measurements on small volumes, potentially combining probes for \(E^*\) and \(G^*\).</p>
-            <figure>
-                 <svg id="fig8-microtensiometer" width="350" height="200" viewBox="0 0 350 200" aria-labelledby="fig8-title"><title id="fig8-title">Microtensiometer Schematic</title><rect x="50" y="50" width="250" height="100" class="geometry-fill" stroke="black" /><text x="175" y="45" class="schematic-text" text-anchor="middle">Chamber</text><rect x="165" y="150" width="20" height="40" class="capillary-tube" /><line x1="175" y1="150" x2="175" y2="120" stroke="#64748b" /><circle cx="175" cy="100" r="20" class="oil-fill interface-line" /><text x="200" y="135" class="schematic-text">Micro-drop</text><rect x="10" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="25" y="130" class="schematic-text" text-anchor="middle">Piezo</text><line x1="40" y1="100" x2="50" y2="100" stroke="black" /><rect x="310" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="325" y="130" class="schematic-text" text-anchor="middle">Sensor</text><line x1="300" y1="100" x2="310" y2="100" stroke="black" /></svg>
-                 <figcaption class="caption">Figure 8: Conceptual schematic of a microtensiometer platform.</figcaption>
-            </figure>
+             <h3 class="text-xl font-semibold mt-4 mb-2">4.2 Microfluidic and Combined Techniques</h3>
+             <p class="text-sm">Miniaturized platforms allow measurements on small volumes, potentially combining probes for \(E^*\) and \(G^*\).</p>
+             <figure>
+                  <svg id="fig8-microtensiometer" width="350" height="200" viewBox="0 0 350 200" aria-labelledby="fig8-title"><title id="fig8-title">Microtensiometer Schematic</title><rect x="50" y="50" width="250" height="100" class="geometry-fill" stroke="black" /><text x="175" y="45" class="schematic-text" text-anchor="middle">Chamber</text><rect x="165" y="150" width="20" height="40" class="capillary-tube" /><line x1="175" y1="150" x2="175" y2="120" stroke="#64748b" /><circle cx="175" cy="100" r="20" class="oil-fill interface-line" /><text x="200" y="135" class="schematic-text">Micro-drop</text><rect x="10" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="25" y="130" class="schematic-text" text-anchor="middle">Piezo</text><line x1="40" y1="100" x2="50" y2="100" stroke="black" /><rect x="310" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="325" y="130" class="schematic-text" text-anchor="middle">Sensor</text><line x1="300" y1="100" x2="310" y2="100" stroke="black" /></svg>
+                  <figcaption class="caption">Figure 8: Conceptual schematic of a microtensiometer platform.</figcaption>
+             </figure>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.3 High-Frequency Oscillating Drops</h3>
-            <p class="text-sm">Analyzing higher-order shape oscillation modes aims to extract viscoelastic information at higher frequencies (\(10 - 200\) Hz).</p>
-        </section>
+             <h3 class="text-xl font-semibold mt-4 mb-2">4.3 High-Frequency Oscillating Drops</h3>
+             <p class="text-sm">Analyzing higher-order shape oscillation modes aims to extract viscoelastic information at higher frequencies (\(10 - 200\) Hz).</p>
+         </section>
 
-        <section id="applications" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">5. Applications and Significance</h2>
-            <p>Dilational interfacial rheology (\(E^*\)) is critical for understanding phenomena governed by interfacial area changes, particularly emulsion and foam stability.</p>
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.1 Emulsion and Foam Stability</h3>
-            <p>Thin film stability against rupture depends strongly on \(E^*\). High elasticity (\(E'\)), often from the Gibbs-Marangoni effect resisting film thinning, and high viscosity (\(E''\)), dissipating disruptive energy, generally lead to enhanced stability. The interfacial structure dictates the magnitude and frequency dependence of these moduli.</p>
-            <p>A key exception occurs near <strong class="text-sky-700">optimum formulation (HLD=0)</strong> in surfactant-oil-water systems. Ultra-low \(\gamma\) and rapid surfactant exchange minimize tension gradients, causing \(E^* \approx 0\). This lack of dilational resistance facilitates rapid film rupture and minimum emulsion stability.</p>
-            <figure>
-                 <svg id="fig9-hld-summary-app" width="500" height="300" viewBox="0 0 500 300" aria-labelledby="fig9-app-title"><title id="fig9-app-title">Properties vs HLD (Conceptual)</title><g transform="translate(50, 30)"><defs><clipPath id="clip-app"><rect width="400" height="220"></rect></clipPath></defs><line x1="0" y1="220" x2="400" y2="220" stroke="black" /><line x1="200" y1="0" x2="200" y2="220" stroke="black" stroke-dasharray="4 2" /><text x="200" y="235" text-anchor="middle" font-size="12">HLD=0</text><text x="50" y="235" text-anchor="middle" font-size="12">HLD < 0</text><text x="350" y="235" text-anchor="middle" font-size="12">HLD > 0</text><text x="405" y="225" font-size="12">HLD</text><text x="200" y="-5" text-anchor="middle" font-size="12">Property Value</text><path d="M 0 50 C 100 50, 150 180, 200 180 S 300 50, 400 50" stroke="#3b82f6" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="180" y="175" fill="#3b82f6" font-size="12">IFT ($\gamma$) Min</text><path d="M 0 100 C 100 100, 150 210, 200 210 S 300 100, 400 100" stroke="#ef4444" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="30" y="120" fill="#ef4444" font-size="12">Stability Max</text><text x="180" y="205" fill="#ef4444" font-size="12">Min</text><path d="M 0 80 C 100 80, 150 190, 200 190 S 300 80, 400 80" stroke="#22c55e" fill="none" stroke-width="2" stroke-dasharray="5 3" clip-path="url(#clip-app)" /><text x="300" y="70" fill="#22c55e" font-size="12">Modulus ($E^*$) Min</text></g></svg>
-                 <figcaption class="caption">Figure 9: Conceptual schematic showing minima in \(\gamma\), stability, and \(E^*\) near HLD=0.</figcaption>
-            </figure>
+         <section id="applications" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
+             <h2 class="text-2xl font-bold">5. Applications and Significance</h2>
+             <p>Dilational interfacial rheology (\(E^*\)) is critical for understanding phenomena governed by interfacial area changes, particularly emulsion and foam stability.</p>
+             <h3 class="text-xl font-semibold mt-4 mb-2">5.1 Emulsion and Foam Stability</h3>
+             <p>Thin film stability against rupture depends strongly on \(E^*\). High elasticity (\(E'\)), often from the Gibbs-Marangoni effect resisting film thinning, and high viscosity (\(E''\)), dissipating disruptive energy, generally lead to enhanced stability. The interfacial structure dictates the magnitude and frequency dependence of these moduli.</p>
+             <p>A key exception occurs near <strong class="text-sky-700">optimum formulation (HLD=0)</strong> in surfactant-oil-water systems. Ultra-low \(\gamma\) and rapid surfactant exchange minimize tension gradients, causing \(E^* \approx 0\). This lack of dilational resistance facilitates rapid film rupture and minimum emulsion stability.</p>
+             <figure>
+                  <svg id="fig9-hld-summary-app" width="500" height="300" viewBox="0 0 500 300" aria-labelledby="fig9-app-title"><title id="fig9-app-title">Properties vs HLD (Conceptual)</title><g transform="translate(50, 30)"><defs><clipPath id="clip-app"><rect width="400" height="220"></rect></clipPath></defs><line x1="0" y1="220" x2="400" y2="220" stroke="black" /><line x1="200" y1="0" x2="200" y2="220" stroke="black" stroke-dasharray="4 2" /><text x="200" y="235" text-anchor="middle" font-size="12">HLD=0</text><text x="50" y="235" text-anchor="middle" font-size="12">HLD < 0</text><text x="350" y="235" text-anchor="middle" font-size="12">HLD > 0</text><text x="405" y="225" font-size="12">HLD</text><text x="200" y="-5" text-anchor="middle" font-size="12">Property Value</text><path d="M 0 50 C 100 50, 150 180, 200 180 S 300 50, 400 50" stroke="#3b82f6" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="180" y="175" fill="#3b82f6" font-size="12">IFT ($\gamma$) Min</text><path d="M 0 100 C 100 100, 150 210, 200 210 S 300 100, 400 100" stroke="#ef4444" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="30" y="120" fill="#ef4444" font-size="12">Stability Max</text><text x="180" y="205" fill="#ef4444" font-size="12">Min</text><path d="M 0 80 C 100 80, 150 190, 200 190 S 300 80, 400 80" stroke="#22c55e" fill="none" stroke-width="2" stroke-dasharray="5 3" clip-path="url(#clip-app)" /><text x="300" y="70" fill="#22c55e" font-size="12">Modulus ($E^*$) Min</text></g></svg>
+                  <figcaption class="caption">Figure 9: Conceptual schematic showing minima in \(\gamma\), stability, and \(E^*\) near HLD=0.</figcaption>
+             </figure>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.2 Asphaltenes and Crude Oil Emulsions</h3>
-            <p>Water-in-crude oil emulsion stability is often governed by rigid, viscoelastic films formed by asphaltene adsorption and aggregation. High dilational moduli (\(E^*\)) reflect the film's resistance to area changes, significantly hindering coalescence.</p>
+             <h3 class="text-xl font-semibold mt-4 mb-2">5.2 Asphaltenes and Crude Oil Emulsions</h3>
+             <p>Water-in-crude oil emulsion stability is often governed by rigid, viscoelastic films formed by asphaltene adsorption and aggregation. High dilational moduli (\(E^*\)) reflect the film's resistance to area changes, significantly hindering coalescence.</p>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.3 Enhanced Oil Recovery (EOR)</h3>
-            <p>Achieving ultra-low \(\gamma\) near HLD=0 is crucial for mobilizing trapped oil. The associated minimum in \(E^*\) is thought to aid oil passage through pore throats. OSDIR is vital for characterizing these systems.</p>
-        </section>
+             <h3 class="text-xl font-semibold mt-4 mb-2">5.3 Enhanced Oil Recovery (EOR)</h3>
+             <p>Achieving ultra-low \(\gamma\) near HLD=0 is crucial for mobilizing trapped oil. The associated minimum in \(E^*\) is thought to aid oil passage through pore throats. OSDIR is vital for characterizing these systems.</p>
+         </section>
 
-        <section id="conclusions" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">6. Conclusions</h2>
-            <p>Dilational interfacial rheology (\(E^* = E' + iE''\)) provides indispensable information about the dynamic response of fluid interfaces to area changes, governing the behavior of emulsions, foams, and other multiphase systems.</p>
-            <ul class="list-disc list-inside space-y-1 pl-4">
-                <li>\(E^*\) is fundamentally linked to interfacial tension gradients (\(\nabla \gamma\)) driven by surface concentration changes (Gibbs-Marangoni effect).</li>
-                <li>Measured \(E^*\) exhibits strong frequency (\(\omega\)) dependence related to characteristic molecular relaxation times.</li>
-                <li>Diverse experimental techniques probe \(E^*\), each possessing distinct advantages and critical limitations. Method selection requires careful consideration.</li>
-                <li>High \(E'\) generally enhances emulsion/foam stability, except near optimum formulation (HLD=0) where rapid surfactant dynamics lead to minimal \(E^*\) and instability.</li>
-                <li>The dilational properties of complex films (e.g., asphaltenes) are intrinsically tied to their interfacial structure, network formation, and aging processes.</li>
-            </ul>
-            <p>A comprehensive understanding requires integrating knowledge of the underlying physics, molecular interactions, and a critical evaluation of the chosen experimental methodology.</p>
-        </section>
+         <section id="conclusions" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
+             <h2 class="text-2xl font-bold">6. Conclusions</h2>
+             <p>Dilational interfacial rheology (\(E^* = E' + iE''\)) provides indispensable information about the dynamic response of fluid interfaces to area changes, governing the behavior of emulsions, foams, and other multiphase systems.</p>
+             <ul class="list-disc list-inside space-y-1 pl-4">
+                 <li>\(E^*\) is fundamentally linked to interfacial tension gradients (\(\nabla \gamma\)) driven by surface concentration changes (Gibbs-Marangoni effect).</li>
+                 <li>Measured \(E^*\) exhibits strong frequency (\(\omega\)) dependence related to characteristic molecular relaxation times.</li>
+                 <li>Diverse experimental techniques probe \(E^*\), each possessing distinct advantages and critical limitations. Method selection requires careful consideration.</li>
+                 <li>High \(E'\) generally enhances emulsion/foam stability, except near optimum formulation (HLD=0) where rapid surfactant dynamics lead to minimal \(E^*\) and instability.</li>
+                 <li>The dilational properties of complex films (e.g., asphaltenes) are intrinsically tied to their interfacial structure, network formation, and aging processes.</li>
+             </ul>
+             <p>A comprehensive understanding requires integrating knowledge of the underlying physics, molecular interactions, and a critical evaluation of the chosen experimental methodology.</p>
+         </section>
 
         <footer class="mt-16 pt-8 border-t border-sky-200 text-sm text-sky-700">
             <p>
@@ -341,26 +394,211 @@
     </main>
 
     <script>
+        // --- Global Animation State ---
+        let osdirAnimationId_d = null;
+        let osdirStartTime = null;
+        let osdirTimeData = [];
 
+        // --- Initialization on DOM Load ---
         document.addEventListener('DOMContentLoaded', function () {
+            console.log("DOM Content Loaded. Starting setup...");
             try {
-                setupAllSliders();
-                renderAllPlotsInitial();
-                setupSmoothScrolling();
+                setupAllSliders(); // Initialize all sliders first
+                renderAllPlotsInitial(); // Render plots, including initial OSDIR call
+                setupSmoothScrolling(); // Setup navigation
+
+                // Typeset MathJax after a short delay to ensure content is rendered
                 if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
                     setTimeout(() => {
+                        console.log("Typesetting MathJax...");
                         MathJax.typesetPromise().catch((err) => console.error('MathJax typesetting failed:', err));
-                    }, 0);
-                } else { console.warn("MathJax or typesetPromise not available."); }
-            } catch (error) { console.error("CRITICAL ERROR during initial setup:", error); alert("A critical error occurred during page initialization."); }
+                    }, 100); // Small delay might help
+                } else {
+                    console.warn("MathJax or typesetPromise not available.");
+                }
+                console.log("Initial setup complete.");
+            } catch (error) {
+                console.error("CRITICAL ERROR during initial setup:", error);
+                alert("A critical error occurred during page initialization. Check console for details.");
+            }
         });
 
-        function setupSlider(sliderId, valueId, options = {}) { const slider = document.getElementById(sliderId); const valueDisplay = document.getElementById(valueId); if (!slider || !valueDisplay) { return; } const { fixedDigits = 1, logScale = false, callback = null } = options; const minAttr = parseFloat(slider.min); const maxAttr = parseFloat(slider.max); let safeMin = isNaN(minAttr) ? (logScale ? 1e-6 : 0) : (logScale ? Math.max(1e-9, minAttr) : minAttr); let safeMax = isNaN(maxAttr) ? safeMin * (logScale ? 1000 : 100) : (logScale ? Math.max(safeMin * 1.1, maxAttr) : Math.max(safeMin + 1e-9, maxAttr)); if (safeMax <= safeMin) { safeMax = safeMin * (logScale ? 10 : 2); if (safeMax <= safeMin) safeMax = safeMin + 1; } slider.logMinVal = safeMin; slider.logMaxVal = safeMax; function calculateActualValue() { const rawValue = parseFloat(slider.value); if (logScale) { const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; const sliderMinInternal = 0; const sliderMaxInternal = 100; const sliderRangeInternal = sliderMaxInternal - sliderMinInternal; if (sliderRangeInternal <= 0 || !isFinite(range) || range <= 0) { slider.actualValue = slider.logMinVal; return; } const normalizedSliderValue = Math.max(0, Math.min(1, (rawValue - sliderMinInternal) / sliderRangeInternal)); const valueLog = minLog + normalizedSliderValue * range; slider.actualValue = Math.pow(10, valueLog); } else { slider.actualValue = rawValue; } if (!isFinite(slider.actualValue)) { slider.actualValue = logScale ? slider.logMinVal : safeMin; } } function updateDisplayAndTriggerCallback() { const currentSlider = document.getElementById(sliderId); const currentValueDisplay = document.getElementById(valueId); if (!currentSlider || !currentValueDisplay) return; try { calculateActualValue(); const valToFormat = slider.actualValue; let displayVal; if (typeof valToFormat !== 'number' || !isFinite(valToFormat)) { displayVal = "NaN"; } else if (logScale && Math.abs(valToFormat) > 1e-9 && Math.abs(valToFormat) < 0.01) { displayVal = valToFormat.toExponential(fixedDigits); } else if (Math.abs(valToFormat) < 1 && fixedDigits > 0 && Math.abs(valToFormat) > 1e-12) { const numDigits = Math.max(fixedDigits, Math.ceil(-Math.log10(Math.abs(valToFormat))) + 1); displayVal = valToFormat.toFixed(Math.min(numDigits, 6)); } else if (Math.abs(valToFormat) < 100 && fixedDigits > 0) { displayVal = valToFormat.toFixed(fixedDigits); } else { displayVal = valToFormat.toFixed(Math.max(0, fixedDigits)); } currentValueDisplay.textContent = displayVal; if (typeof callback === 'function') { callback(); } } catch (e) { console.error("Error updating slider", sliderId, e); currentValueDisplay.textContent = "Error"; } } const initialValueAttr = slider.getAttribute('value'); let initialActualValue = initialValueAttr ? parseFloat(initialValueAttr) : (logScale ? slider.logMinVal : safeMin); if (logScale) { if (!isFinite(initialActualValue) || initialActualValue < slider.logMinVal || initialActualValue > slider.logMaxVal) { initialActualValue = slider.logMinVal; } const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; let initialSliderPos = 0; if (range > 0 && initialActualValue > 0 && isFinite(range)) { const valueLog = Math.log10(initialActualValue); initialSliderPos = Math.round(((valueLog - minLog) / range) * 100); } slider.min = "0"; slider.max = "100"; slider.step = "1"; slider.value = initialSliderPos; } else { if (!isFinite(initialActualValue) || initialActualValue < safeMin || initialActualValue > safeMax) initialActualValue = safeMin; slider.min = safeMin.toString(); slider.max = safeMax.toString(); const range = safeMax - safeMin; let step = (range / 100); if (range > 0) { const magnitude = Math.pow(10, Math.floor(Math.log10(step))); step = Math.max(1e-6, magnitude / 10); } else { step = 1e-6; } slider.step = step.toExponential(1); slider.value = initialActualValue; } slider.oninput = updateDisplayAndTriggerCallback; calculateActualValue(); updateDisplayAndTriggerCallback(); }
+        // --- Robust Slider Setup Function (Revised Version) ---
+        function setupSlider(sliderId, valueId, options = {}) {
+             const slider = document.getElementById(sliderId);
+             const valueDisplay = document.getElementById(valueId);
+             if (!slider || !valueDisplay) {
+                console.error("setupSlider: Element not found:", sliderId, valueId); // More specific error
+                return;
+             }
+
+             // Store options and safe min/max on the slider element for easier access
+             slider.options = { fixedDigits: 1, logScale: false, callback: null, ...options }; // Default + overrides
+             const { fixedDigits, logScale, callback } = slider.options;
+             const minAttr = parseFloat(slider.min);
+             const maxAttr = parseFloat(slider.max);
+             // Ensure safeMin is positive for log scale
+             slider.safeMin = isNaN(minAttr) ? (logScale ? 1e-9 : 0) : (logScale ? Math.max(1e-9, minAttr) : minAttr);
+             slider.safeMax = isNaN(maxAttr) ? slider.safeMin * (logScale ? 1000 : 100) : (logScale ? Math.max(slider.safeMin * 1.1, maxAttr) : Math.max(slider.safeMin + 1e-9, maxAttr));
+             // Ensure max is strictly greater than min
+             if (slider.safeMax <= slider.safeMin) {
+                 slider.safeMax = slider.safeMin * (logScale ? 10 : 2);
+                 // Final fallback if still equal/inverted
+                 if (slider.safeMax <= slider.safeMin) slider.safeMax = slider.safeMin + 1;
+             }
+             slider.logMinVal = slider.safeMin; // Keep separate property if needed elsewhere, but use safeMin/Max internally
+             slider.logMaxVal = slider.safeMax;
+
+             // Function to calculate the actual value based on slider position
+             function calculateActualValue() {
+                 const rawValue = parseFloat(slider.value);
+                 let actual;
+                 if (logScale) {
+                     const minLog = Math.log10(slider.safeMin);
+                     const maxLog = Math.log10(slider.safeMax);
+                     const range = maxLog - minLog;
+                     // Use the slider's current min/max for position calculation (e.g., 0-100 for log)
+                     const sliderMinInternal = parseFloat(slider.min);
+                     const sliderMaxInternal = parseFloat(slider.max);
+                     const sliderRangeInternal = sliderMaxInternal - sliderMinInternal;
+
+                     if (!isFinite(minLog) || !isFinite(maxLog) || !isFinite(range) || range <= 0 || sliderRangeInternal <= 0) {
+                         console.warn(`Invalid range for log slider ${sliderId}. Min: ${slider.safeMin}, Max: ${slider.safeMax}`);
+                         actual = slider.safeMin; // Fallback
+                     } else {
+                         const normalizedSliderValue = Math.max(0, Math.min(1, (rawValue - sliderMinInternal) / sliderRangeInternal));
+                         const valueLog = minLog + normalizedSliderValue * range;
+                         actual = Math.pow(10, valueLog);
+                     }
+                 } else {
+                     actual = rawValue; // Linear scale
+                 }
+                 // Final sanity check for NaN/Infinity
+                 slider.actualValue = (!isFinite(actual)) ? slider.safeMin : actual;
+                 // Clamp value within safe bounds just in case calculation goes awry
+                 slider.actualValue = Math.max(slider.safeMin, Math.min(slider.safeMax, slider.actualValue));
+                 // console.log(`Slider ${sliderId}: raw=${rawValue}, actual=${slider.actualValue}`); // Debugging line
+             }
+
+            // Function to format the display value - separated for clarity and robustness
+             function formatDisplayValue(value, digits, isLog) {
+                if (typeof value !== 'number' || !isFinite(value)) {
+                    console.warn(`formatDisplayValue received non-finite value: ${value}`);
+                    return "NaN";
+                 }
+                try {
+                    // Use exponential for small numbers on log scale or generally small numbers
+                    if ((isLog && value < 0.01 && value > 1e-9) || (value !== 0 && Math.abs(value) < 0.001)) {
+                         return value.toExponential(digits);
+                    }
+                    // Use fixed notation for reasonably sized numbers
+                    if (Math.abs(value) < 1000 || value === 0) {
+                         // Ensure digits is non-negative for toFixed
+                         const nonNegativeDigits = Math.max(0, digits);
+                         return value.toFixed(nonNegativeDigits);
+                    }
+                    // Use exponential for very large numbers
+                    return value.toExponential(digits);
+                } catch (formatError) {
+                    console.error(`Formatting error for value ${value} with digits ${digits}:`, formatError);
+                    return "FmtErr"; // Specific formatting error indicator
+                }
+             }
+
+             // Function to update the display span and trigger the callback
+             function updateDisplayAndTriggerCallback() {
+                 const currentSlider = document.getElementById(sliderId); // Re-fetch elements inside handler
+                 const currentValueDisplay = document.getElementById(valueId);
+                 if (!currentSlider || !currentValueDisplay) return;
+
+                 try {
+                     calculateActualValue(); // Update slider.actualValue based on current position
+                     const displayVal = formatDisplayValue(currentSlider.actualValue, fixedDigits, logScale);
+                     currentValueDisplay.textContent = displayVal; // Update display
+
+                     // Trigger callback if it exists
+                     if (typeof callback === 'function') {
+                         callback();
+                     }
+                 } catch (e) {
+                     console.error(`Error during update/callback for slider ${sliderId}:`, e);
+                     try { currentValueDisplay.textContent = "Error"; } catch (displayError) { /* ignore nested error */ }
+                 }
+             }
+
+            // --- Initial Slider Configuration ---
+            const initialValueAttr = slider.getAttribute('value');
+            // Try to parse initial value, default to safeMin if invalid
+            let initialNumericValue = initialValueAttr ? parseFloat(initialValueAttr) : slider.safeMin; // Use safeMin as default
+            if (isNaN(initialNumericValue)) {
+                 initialNumericValue = slider.safeMin;
+            }
+
+            if (logScale) {
+                 // Clamp initial value to bounds BEFORE calculating position
+                initialNumericValue = Math.max(slider.safeMin, Math.min(slider.safeMax, initialNumericValue));
+
+                const minLog = Math.log10(slider.safeMin);
+                const maxLog = Math.log10(slider.safeMax);
+                const range = maxLog - minLog;
+                let initialSliderPos = 0; // Default slider position (0-100)
+
+                // Check if range is valid before calculating position
+                if (isFinite(minLog) && isFinite(maxLog) && isFinite(range) && range > 0 && initialNumericValue > 0) {
+                    const valueLog = Math.log10(initialNumericValue);
+                    initialSliderPos = Math.round(((valueLog - minLog) / range) * 100);
+                } else {
+                     console.warn(`Could not calculate initial log position for ${sliderId}. Min: ${slider.safeMin}, Max: ${slider.safeMax}, Initial: ${initialNumericValue}. Defaulting to 0.`);
+                     initialSliderPos = 0; // Ensure it's 0 if calculation fails
+                }
+                slider.min = "0"; slider.max = "100"; slider.step = "1";
+                slider.value = initialSliderPos.toString(); // Set initial slider position
+
+            } else { // Linear scale
+                 // Clamp initial value to bounds
+                 initialNumericValue = Math.max(slider.safeMin, Math.min(slider.safeMax, initialNumericValue));
+
+                slider.min = slider.safeMin.toString();
+                slider.max = slider.safeMax.toString();
+                 // Calculate a reasonable step
+                 const range = slider.safeMax - slider.safeMin;
+                 let step = (range > 0) ? (range / 100) : 1e-6;
+                 if (step > 0) {
+                     const magnitude = Math.pow(10, Math.floor(Math.log10(step)));
+                     // Round step to avoid excessive precision issues if possible
+                     step = Math.max(1e-6, Math.round(step / magnitude) * magnitude);
+                 } else {
+                     step = 1e-6;
+                 }
+                 slider.step = step.toExponential(2); // Use exponential for step attribute for robustness
+                 slider.value = initialNumericValue.toString();
+            }
+
+             // --- Set Event Listener ---
+             slider.oninput = updateDisplayAndTriggerCallback;
+
+            // --- Perform Initial Display Update Only (No Callback Yet) ---
+            // This calculates the initial actualValue based on the initial slider setup
+            // and updates the display span without triggering the potentially complex callback.
+            try {
+                 calculateActualValue(); // Calculate initial actualValue
+                 const initialDisplayVal = formatDisplayValue(slider.actualValue, fixedDigits, logScale);
+                 valueDisplay.textContent = initialDisplayVal;
+                 console.log(`Slider ${sliderId} initialized. Actual: ${slider.actualValue}, Display: ${initialDisplayVal}`);
+            } catch(initError) {
+                 console.error(`Error during initial display setup for slider ${sliderId}:`, initError);
+                 valueDisplay.textContent = "InitErr";
+            }
+         } // End of setupSlider function
+
+        // --- D3 Plotting Helper Functions ---
         function getPlotDimensions(plotDivId, margin) { const plotDiv = document.getElementById(plotDivId); if (!plotDiv) { throw new Error(`Plot container #${plotDivId} not found.`); } const width = plotDiv.clientWidth; const height = plotDiv.clientHeight; if (!width || !height || width <= 0 || height <= 0) { throw new Error(`Plot container #${plotDivId} has invalid dimensions: ${width}x${height}.`); } const plotWidth = width - margin.left - margin.right; const plotHeight = height - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) { throw new Error(`Plot area for #${plotDivId} invalid after margins: ${plotWidth}x${plotHeight}`); } return { containerWidth: width, containerHeight: height, plotWidth, plotHeight }; }
         function setupPlotArea(targetId, margin, isDirectSvg = false) { let svg, g; let containerWidth, containerHeight; if (isDirectSvg) { svg = d3.select(`#${targetId}`); if (svg.empty()) throw new Error(`Target SVG #${targetId} not found.`); containerWidth = parseFloat(svg.attr("width")) || 400; containerHeight = parseFloat(svg.attr("height")) || 200; svg.selectAll("g").remove(); g = svg.append("g").attr("id", `${targetId}-plot-group`).attr("class", "d3-plot"); } else { const plotDiv = document.getElementById(targetId); if (!plotDiv) throw new Error(`Plot container #${targetId} not found.`); containerWidth = plotDiv.clientWidth; containerHeight = plotDiv.clientHeight; if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <= 0) { throw new Error(`Plot container #${targetId} has invalid dimensions: ${containerWidth}x${containerHeight}.`); } svg = d3.select(plotDiv).select("svg"); if (svg.empty()) { svg = d3.select(plotDiv).append("svg"); } svg.attr("width", "100%").attr("height", "100%").attr("viewBox", `0 0 ${containerWidth} ${containerHeight}`).attr("preserveAspectRatio", "xMidYMid meet"); svg.selectAll("*").remove(); g = svg.append("g").attr("class", "d3-plot"); } g.attr("transform", `translate(${margin.left},${margin.top})`); const plotWidth = containerWidth - margin.left - margin.right; const plotHeight = containerHeight - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) throw new Error(`Plot area for #${targetId} invalid after margins: ${plotWidth}x${plotHeight}`); const dims = { containerWidth, containerHeight, plotWidth, plotHeight }; return { g, dims }; }
         function drawAxes(g, xScale, yScaleLeft, yScaleRight, dims, margin, labels) { g.append("g").attr("class", "x axis").attr("transform", `translate(0,${dims.plotHeight})`).call(d3.axisBottom(xScale).ticks(labels.xTicks || 5).tickFormat(labels.xFormat || d3.format(".1f"))); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight + margin.bottom - (labels.xOffset || 5)).text(labels.x || "X Axis").attr("class", "plot-label").attr("text-anchor", "middle"); g.append("g").attr("class", "y axis").call(d3.axisLeft(yScaleLeft).ticks(labels.yLeftTicks || 5).tickFormat(labels.yLeftFormat || d3.format(".1f"))).attr("stroke", labels.yLeftColor || null); g.append("text").attr("transform", "rotate(-90)").attr("y", -margin.left + (labels.yLeftOffset || 10)).attr("x", -dims.plotHeight / 2).text(labels.yLeft || "Left Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yLeftColor || 'currentColor'); if (yScaleRight && labels.yRight) { g.append("g").attr("class", "y axis").attr("transform", `translate(${dims.plotWidth},0)`).call(d3.axisRight(yScaleRight).ticks(labels.yRightTicks || 5).tickFormat(labels.yRightFormat || d3.format(".1f"))).attr("stroke", labels.yRightColor || null); g.append("text").attr("transform", "rotate(90)").attr("y", -dims.plotWidth - margin.right + (labels.yRightOffset || 15)).attr("x", dims.plotHeight / 2).text(labels.yRight || "Right Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yRightColor || 'currentColor'); } }
         function drawLine(g, plotData, lineGenerator, cssClass) { g.append("path").datum(plotData).attr("class", `line ${cssClass} d3-plot`).attr("d", lineGenerator).attr("fill", "none").attr("stroke-width", 2); }
         function displayPlotError(targetId, message = "Error rendering plot.", isDirectSvg = false) { try { const margin = { top: 10, right: 10, bottom: 10, left: 10 }; const { g, dims } = setupPlotArea(targetId, margin, isDirectSvg); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight / 2).text(message).style("font-size", "10px").attr("fill", "red").attr("text-anchor", "middle"); } catch (e) { console.error(`Failed to display error in target ${targetId}: ${e.message}`); } }
+
+        // --- Plotting Functions ---
 
         /** Fig 1: Renders the conceptual dilational response plot */
         function renderDilationalResponsePlot() {
@@ -418,222 +656,325 @@
                 const areaExtent = d3.extent(plotData, d => d.area); const piExtent = d3.extent(plotData, d => d.pi); const EExtent = d3.extent(plotData, d => d.E); if (areaExtent.some(v => !isFinite(v)) || piExtent.some(v => !isFinite(v)) || EExtent.some(v => !isFinite(v))) throw new Error("Invalid data extents."); if(areaExtent[1] <= areaExtent[0]) areaExtent[1] = areaExtent[0] + 1; if(piExtent[1] <= piExtent[0]) piExtent[1] = piExtent[0] + 0.1; if(EExtent[1] <= EExtent[0]) EExtent[1] = EExtent[0] + 1; const xScale = d3.scaleLinear().domain(areaExtent).range([dims.plotWidth, 0]); const yPiMax = Math.max(10, piExtent[1] * 1.1); const yEMax = Math.max(50, EExtent[1] * 1.1); const yPiScale = d3.scaleLinear().domain([0, yPiMax]).range([dims.plotHeight, 0]).nice(); const yEScale = d3.scaleLinear().domain([0, yEMax]).range([dims.plotHeight, 0]).nice();
                 drawAxes(g, xScale, yPiScale, yEScale, dims, margin, { x: "Area / molecule (Å²)", xOffset: 5, yLeft: "Π (mN/m)", yLeftColor: "#3b82f6", yLeftOffset: 10, yRight: "E' (mN/m)", yRightColor: "#ef4444", yRightOffset: 15 });
                 const lineGen = (yScaleAccessor, yProp) => d3.line().x(d => xScale(d.area)).y(d => yScaleAccessor(d[yProp])).defined(d => d[yProp] !== null && isFinite(d[yProp]) && isFinite(xScale(d.area)) && isFinite(yScaleAccessor(d[yProp])));
-                drawLine(g, plotData, lineGen(yPiScale, 'pi'), 'pressure-line'); g.select(".pressure-line").attr("stroke", "#3b82f6");
-                drawLine(g, plotData, lineGen(yEScale, 'E'), 'elastic-line'); g.select(".elastic-line").attr("stroke-dasharray", "3 3").attr("stroke", "#ef4444");
+                drawLine(g, plotData, lineGen(yPiScale, 'pi'), 'pressure-line'); g.select(".pressure-line").attr("stroke", "#3b82f6"); // Ensure color is set if CSS class isn't defined
+                drawLine(g, plotData, lineGen(yEScale, 'E'), 'elastic-line'); g.select(".elastic-line").attr("stroke-dasharray", "3 3").attr("stroke", "#ef4444"); // Ensure color is set
             } catch (error) { displayErrorOnce(`Langmuir Plot Error: ${error.message}`); }
         }
 
-     /**
- * 3.5 Oscillating Spinning Drop: Updates drop shape, animation, and plot.
- * Enhanced error checking and robustness.
- */
-// Keep these global or scoped appropriately for your structure
-let osdirAnimationId_d = null;
-let osdirStartTime = null;
-let osdirTimeData = [];
+        /**
+         * 3.5 Oscillating Spinning Drop: Updates drop shape, animation, and plot.
+         * Enhanced error checking and robustness.
+         */
+        function updateOSDIRApp_d() {
+            const context = "OSDIR App";
+            console.log(`Updating ${context}...`); // Log start
 
-function updateOSDIRApp_d() {
-    const context = "OSDIR App";
-    console.log(`Updating ${context}...`); // Log start
-
-    // Clear previous animation first
-    if (osdirAnimationId_d) {
-        cancelAnimationFrame(osdirAnimationId_d);
-        osdirAnimationId_d = null;
-    }
-    osdirStartTime = null; // Reset start time
-    osdirTimeData = []; // Clear previous data
-
-    try {
-        // --- Get Elements and Check Existence ---
-        const gamma0Slider = document.getElementById('staticTensionOSD_d');
-        const EGSlider = document.getElementById('combinedModulusOSD_d');
-        const speedSlider = document.getElementById('meanSpeedOSD_d');
-        const svgTube = d3.select("#osdir-tube-svg_d");
-        const dropRect = svgTube.select("#osdir-drop-rect_d");
-        const plotDiv = document.getElementById('osdir-plot_d');
-        const restartButton = document.getElementById('osdir-restart-button');
-
-        // Explicit checks for elements
-        if (!gamma0Slider) throw new Error("Slider 'staticTensionOSD_d' not found.");
-        if (!EGSlider) throw new Error("Slider 'combinedModulusOSD_d' not found.");
-        if (!speedSlider) throw new Error("Slider 'meanSpeedOSD_d' not found.");
-        if (svgTube.empty()) throw new Error("SVG container '#osdir-tube-svg_d' not found.");
-        if (dropRect.empty()) throw new Error("SVG rect '#osdir-drop-rect_d' not found.");
-        if (!plotDiv) throw new Error("Plot div '#osdir-plot_d' not found.");
-        if (!restartButton) throw new Error("Button '#osdir-restart-button' not found.");
-
-        // --- Check if sliders have been initialized by setupSlider ---
-        if (typeof gamma0Slider.actualValue === 'undefined') throw new Error("Gamma slider not initialized (actualValue missing).");
-        if (typeof EGSlider.actualValue === 'undefined') throw new Error("Modulus slider not initialized (actualValue missing).");
-        if (typeof speedSlider.actualValue === 'undefined') throw new Error("Speed slider not initialized (actualValue missing).");
-
-        // --- Get Slider Values and Validate ---
-        const gamma0_mNm = gamma0Slider.actualValue;
-        const E_plus_G_mNm = EGSlider.actualValue;
-        const omega_rot_mean_rpm = speedSlider.actualValue;
-
-        if (!isFinite(gamma0_mNm) || gamma0_mNm <= 0) throw new Error(`Invalid Static Tension: ${gamma0_mNm}`);
-        if (!isFinite(E_plus_G_mNm) || E_plus_G_mNm < 0) throw new Error(`Invalid Combined Modulus: ${E_plus_G_mNm}`); // Allow 0
-        if (!isFinite(omega_rot_mean_rpm) || omega_rot_mean_rpm <= 0) throw new Error(`Invalid Mean Speed: ${omega_rot_mean_rpm}`);
-
-        // --- Simulation Parameters (SI Units) ---
-        const gamma0 = gamma0_mNm / 1000;        // N/m
-        const E_plus_G = E_plus_G_mNm / 1000;    // N/m
-        const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60; // rad/s
-
-        const tubeWidth = parseFloat(svgTube.attr("width")) || 300;
-        const tubeHeight = parseFloat(svgTube.attr("height")) || 50;
-        const tubeRadius_visual = tubeHeight / 2 - 10; // Adjust as needed
-        const dropMaxHeight_visual = tubeRadius_visual * 1.6;
-
-        // Assumed Conceptual Parameters
-        const delta_rho = 100;              // kg/m^3 (Example density difference)
-        const dropVolume = 1e-9;            // m^3 (Example volume)
-        const oscillation_freq_hz = 0.1;    // Hz
-        const omega_osc = oscillation_freq_hz * 2 * Math.PI; // rad/s
-        const speed_amplitude_frac = 0.05;  // 5% speed oscillation
-        const simulation_duration = (1 / oscillation_freq_hz) * 2.1; // ~2 cycles
-
-        osdirStartTime = Date.now(); // Set start time for the new animation
-
-        // --- Animation Loop Definition ---
-        function animateOSDIRDrop() {
-            if (!osdirStartTime) return; // Stop if cancelled externally
+            // Clear previous animation first
+            if (osdirAnimationId_d) {
+                cancelAnimationFrame(osdirAnimationId_d);
+                osdirAnimationId_d = null;
+            }
+            osdirStartTime = null; // Reset start time
+            osdirTimeData = []; // Clear previous data
 
             try {
-                const elapsed = (Date.now() - osdirStartTime) / 1000;
+                // --- Get Elements and Check Existence ---
+                const gamma0Slider = document.getElementById('staticTensionOSD_d');
+                const EGSlider = document.getElementById('combinedModulusOSD_d');
+                const speedSlider = document.getElementById('meanSpeedOSD_d');
+                const svgTube = d3.select("#osdir-tube-svg_d");
+                const dropRect = svgTube.select("#osdir-drop-rect_d");
+                const plotDiv = document.getElementById('osdir-plot_d');
+                const restartButton = document.getElementById('osdir-restart-button');
 
-                // Check if simulation time is up
-                if (elapsed > simulation_duration) {
-                    renderOSDIRPlot(osdirTimeData); // Render final plot
-                    osdirAnimationId_d = null; // Mark as stopped
-                    return; // Stop the loop
+                // Explicit checks for elements
+                if (!gamma0Slider) throw new Error("Slider 'staticTensionOSD_d' not found.");
+                if (!EGSlider) throw new Error("Slider 'combinedModulusOSD_d' not found.");
+                if (!speedSlider) throw new Error("Slider 'meanSpeedOSD_d' not found.");
+                if (svgTube.empty()) throw new Error("SVG container '#osdir-tube-svg_d' not found.");
+                if (dropRect.empty()) throw new Error("SVG rect '#osdir-drop-rect_d' not found.");
+                if (!plotDiv) throw new Error("Plot div '#osdir-plot_d' not found.");
+                if (!restartButton) throw new Error("Button '#osdir-restart-button' not found.");
+
+                // --- Check if sliders have been initialized by setupSlider ---
+                if (typeof gamma0Slider.actualValue === 'undefined') throw new Error("Gamma slider not initialized (actualValue missing).");
+                if (typeof EGSlider.actualValue === 'undefined') throw new Error("Modulus slider not initialized (actualValue missing).");
+                if (typeof speedSlider.actualValue === 'undefined') throw new Error("Speed slider not initialized (actualValue missing).");
+
+                // --- Get Slider Values and Validate ---
+                const gamma0_mNm = gamma0Slider.actualValue;
+                const E_plus_G_mNm = EGSlider.actualValue;
+                const omega_rot_mean_rpm = speedSlider.actualValue;
+
+                if (!isFinite(gamma0_mNm) || gamma0_mNm <= 0) throw new Error(`Invalid Static Tension: ${gamma0_mNm}`);
+                if (!isFinite(E_plus_G_mNm) || E_plus_G_mNm < 0) throw new Error(`Invalid Combined Modulus: ${E_plus_G_mNm}`); // Allow 0
+                if (!isFinite(omega_rot_mean_rpm) || omega_rot_mean_rpm <= 0) throw new Error(`Invalid Mean Speed: ${omega_rot_mean_rpm}`);
+
+                // --- Simulation Parameters (SI Units) ---
+                const gamma0 = gamma0_mNm / 1000;        // N/m
+                const E_plus_G = E_plus_G_mNm / 1000;    // N/m
+                const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60; // rad/s
+
+                const tubeWidth = parseFloat(svgTube.attr("width")) || 300;
+                const tubeHeight = parseFloat(svgTube.attr("height")) || 50;
+                const tubeRadius_visual = tubeHeight / 2 - 10; // Adjust as needed
+                const dropMaxHeight_visual = tubeRadius_visual * 1.6;
+
+                // Assumed Conceptual Parameters
+                const delta_rho = 100;              // kg/m^3 (Example density difference)
+                const dropVolume = 1e-9;            // m^3 (Example volume)
+                const oscillation_freq_hz = 0.1;    // Hz
+                const omega_osc = oscillation_freq_hz * 2 * Math.PI; // rad/s
+                const speed_amplitude_frac = 0.05;  // 5% speed oscillation
+                const simulation_duration = (1 / oscillation_freq_hz) * 2.1; // ~2 cycles
+
+                osdirStartTime = Date.now(); // Set start time for the new animation
+
+                // --- Animation Loop Definition ---
+                function animateOSDIRDrop() {
+                    if (!osdirStartTime) return; // Stop if cancelled externally
+
+                    try {
+                        const elapsed = (Date.now() - osdirStartTime) / 1000;
+
+                        // Check if simulation time is up
+                        if (elapsed > simulation_duration) {
+                            renderOSDIRPlot(osdirTimeData); // Render final plot
+                            osdirAnimationId_d = null; // Mark as stopped
+                            return; // Stop the loop
+                        }
+
+                        // --- Calculations within the loop ---
+                        const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed));
+                        if (current_omega_rot <= 1e-9) { // Use a small positive threshold
+                             console.warn("Rotation speed near zero, skipping frame.");
+                             osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); // Skip problematic frame
+                             return;
+                        }
+
+                        // Vonnegut calculation with checks
+                        const omega_sq = current_omega_rot**2;
+                        if (omega_sq <= 0) throw new Error("omega_sq is zero or negative.");
+                        const R_approx_term = (4 * gamma0) / (delta_rho * omega_sq);
+                        if (!isFinite(R_approx_term) || R_approx_term <= 0) throw new Error(`Invalid R_approx_term: ${R_approx_term}`);
+                        const R_approx = Math.cbrt(R_approx_term); // Use Math.cbrt for cube root
+                        if (!isFinite(R_approx) || R_approx <= 1e-9) throw new Error(`Invalid R_approx: ${R_approx}`);
+                        const R_approx_sq = R_approx**2;
+                        if (R_approx_sq <= 0) throw new Error("R_approx_sq is zero or negative.");
+                        const L_approx = dropVolume / (Math.PI * R_approx_sq);
+                        if (!isFinite(L_approx) || L_approx <= 0) throw new Error(`Invalid L_approx: ${L_approx}`);
+
+                        // Visual scaling calculations with checks
+                        const R_mean_static_term = (4 * gamma0) / (delta_rho * omega_rot_mean**2);
+                        const R_mean_static = Math.cbrt(Math.max(1e-12, R_mean_static_term));
+                        const L_mean_static = dropVolume / (Math.PI * Math.max(1e-12, R_mean_static**2));
+                        const visual_L_scale_factor = (L_mean_static > 1e-9 && isFinite(L_mean_static)) ? (tubeWidth * 0.7) / L_mean_static : 1;
+                        const visual_L = Math.max(10, Math.min(tubeWidth * 0.95, L_approx * visual_L_scale_factor));
+                        const visual_R = Math.min(dropMaxHeight_visual / 2, Math.max(1, R_approx * visual_L_scale_factor));
+                        if (!isFinite(visual_L) || !isFinite(visual_R)) throw new Error("Invalid visual dimensions");
+
+                        // Update SVG Drop
+                        const x_pos = (tubeWidth - visual_L) / 2;
+                        dropRect.attr("x", x_pos)
+                            .attr("y", tubeHeight / 2 - visual_R)
+                            .attr("width", visual_L)
+                            .attr("height", visual_R * 2)
+                            .attr("rx", visual_R).attr("ry", visual_R);
+
+                        // Conceptual Tension Response
+                        const strain_approx = speed_amplitude_frac * Math.sin(omega_osc * elapsed) * 2;
+                        const phi_rad_osdir = Math.PI / 2 / (1 + E_plus_G / Math.max(1e-9, gamma0 * 0.1)); // Simplified phase angle
+                        const tension_change_amp = E_plus_G * speed_amplitude_frac * 2;
+                        const current_gamma = gamma0 + tension_change_amp * Math.sin(omega_osc * elapsed + phi_rad_osdir);
+
+                        // Store data point
+                        osdirTimeData.push({
+                            time: elapsed,
+                            speed: current_omega_rot * 60 / (2 * Math.PI), // RPM
+                            tension: Math.max(1e-4, current_gamma * 1000)  // mN/m
+                        });
+
+                        // Request next frame
+                        osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop);
+
+                    } catch (animError) {
+                        console.error("Error during OSDIR animation frame:", animError);
+                        renderOSDIRPlot([], true, `Animation Error: ${animError.message}`); // Display error on plot
+                        osdirAnimationId_d = null; // Stop animation
+                        osdirStartTime = null;
+                    }
                 }
 
-                // --- Calculations within the loop ---
-                const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed));
-                if (current_omega_rot <= 1e-9) { // Use a small positive threshold
-                     console.warn("Rotation speed near zero, skipping frame.");
-                     osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); // Skip problematic frame
-                     return;
-                }
+                // Start the Animation
+                animateOSDIRDrop();
+                renderOSDIRPlot([], false, "Running simulation..."); // Show initial loading message
 
-                // Vonnegut calculation with checks
-                const omega_sq = current_omega_rot**2;
-                if (omega_sq <= 0) throw new Error("omega_sq is zero or negative.");
-                const R_approx_term = (4 * gamma0) / (delta_rho * omega_sq);
-                if (!isFinite(R_approx_term) || R_approx_term <= 0) throw new Error(`Invalid R_approx_term: ${R_approx_term}`);
-                const R_approx = Math.cbrt(R_approx_term); // Use Math.cbrt for cube root
-                if (!isFinite(R_approx) || R_approx <= 1e-9) throw new Error(`Invalid R_approx: ${R_approx}`);
-                const R_approx_sq = R_approx**2;
-                if (R_approx_sq <= 0) throw new Error("R_approx_sq is zero or negative.");
-                const L_approx = dropVolume / (Math.PI * R_approx_sq);
-                if (!isFinite(L_approx) || L_approx <= 0) throw new Error(`Invalid L_approx: ${L_approx}`);
+                // Setup Restart Button
+                restartButton.onclick = () => {
+                    console.log("Restarting OSDIR animation...");
+                    if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); // Clear existing animation
+                    osdirAnimationId_d = null;
+                    osdirStartTime = Date.now(); // Set new start time
+                    osdirTimeData = []; // Clear data
+                    renderOSDIRPlot([], false, "Running simulation..."); // Show loading message
+                    animateOSDIRDrop(); // Start new animation
+                };
 
-                // Visual scaling calculations with checks
-                const R_mean_static_term = (4 * gamma0) / (delta_rho * omega_rot_mean**2);
-                const R_mean_static = Math.cbrt(Math.max(1e-12, R_mean_static_term));
-                const L_mean_static = dropVolume / (Math.PI * Math.max(1e-12, R_mean_static**2));
-                const visual_L_scale_factor = (L_mean_static > 1e-9 && isFinite(L_mean_static)) ? (tubeWidth * 0.7) / L_mean_static : 1;
-                const visual_L = Math.max(10, Math.min(tubeWidth * 0.95, L_approx * visual_L_scale_factor));
-                const visual_R = Math.min(dropMaxHeight_visual / 2, Math.max(1, R_approx * visual_L_scale_factor));
-                if (!isFinite(visual_L) || !isFinite(visual_R)) throw new Error("Invalid visual dimensions");
-
-                // Update SVG Drop
-                const x_pos = (tubeWidth - visual_L) / 2;
-                dropRect.attr("x", x_pos)
-                    .attr("y", tubeHeight / 2 - visual_R)
-                    .attr("width", visual_L)
-                    .attr("height", visual_R * 2)
-                    .attr("rx", visual_R).attr("ry", visual_R);
-
-                // Conceptual Tension Response
-                const strain_approx = speed_amplitude_frac * Math.sin(omega_osc * elapsed) * 2;
-                const phi_rad_osdir = Math.PI / 2 / (1 + E_plus_G / Math.max(1e-9, gamma0 * 0.1)); // Simplified phase angle
-                const tension_change_amp = E_plus_G * speed_amplitude_frac * 2;
-                const current_gamma = gamma0 + tension_change_amp * Math.sin(omega_osc * elapsed + phi_rad_osdir);
-
-                // Store data point
-                osdirTimeData.push({
-                    time: elapsed,
-                    speed: current_omega_rot * 60 / (2 * Math.PI), // RPM
-                    tension: Math.max(1e-4, current_gamma * 1000)  // mN/m
-                });
-
-                // Request next frame
-                osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop);
-
-            } catch (animError) {
-                console.error("Error during OSDIR animation frame:", animError);
-                renderOSDIRPlot([], true, `Animation Error: ${animError.message}`); // Display error on plot
-                osdirAnimationId_d = null; // Stop animation
-                osdirStartTime = null;
+            } catch (error) {
+                console.error(`Error setting up ${context}:`, error);
+                renderOSDIRPlot([], true, `Setup Error: ${error.message}`); // Display setup error on plot
             }
         }
 
-        // Start the Animation
-        animateOSDIRDrop();
-        renderOSDIRPlot([], false, "Running simulation..."); // Show initial loading message
-
-        // Setup Restart Button
-        restartButton.onclick = () => {
-            console.log("Restarting OSDIR animation...");
-            if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); // Clear existing animation
-            osdirAnimationId_d = null;
-            osdirStartTime = Date.now(); // Set new start time
-            osdirTimeData = []; // Clear data
-            renderOSDIRPlot([], false, "Running simulation..."); // Show loading message
-            animateOSDIRDrop(); // Start new animation
-        };
-
-    } catch (error) {
-        console.error(`Error setting up ${context}:`, error);
-        renderOSDIRPlot([], true, `Setup Error: ${error.message}`); // Display setup error on plot
-    }
-}
-        // --- Initialization Function ---
-        function setupAllSliders() {
+        /**
+         * Renders the plot for OSDIR: Speed vs. Tension.
+         * Added more robust error/loading state handling.
+         */
+        function renderOSDIRPlot(plotData, isError = false, message = "Error rendering plot.") {
+            const plotDivId = "osdir-plot_d";
+            const context = "OSDIR Plot";
             try {
-                setupSlider('fig1PhaseSlider', 'fig1PhaseValue', { fixedDigits: 0, callback: renderDilationalResponsePlot });
-                setupSlider('fig1FreqSlider', 'fig1FrequencyValue', { fixedDigits: 1, callback: renderDilationalResponsePlot });
-                setupSlider('elasticModulusWave', 'elasticModulusWaveValue', { fixedDigits: 0, callback: updateWaveDampingPlot });
-                setupSlider('relaxationTimeWave', 'relaxationTimeWaveValue', { fixedDigits: 4, logScale: true, callback: updateWaveDampingPlot });
-                const monolayerSelect = document.getElementById('monolayerPhase'); if (monolayerSelect) { monolayerSelect.onchange = updateLangmuirPlot; }
-                setupSlider('staticTensionOSD_d', 'staticTensionOSDValue_d', { fixedDigits: 3, logScale: true, callback: updateOSDIRApp_d });
-                setupSlider('combinedModulusOSD_d', 'combinedModulusOSDValue_d', { fixedDigits: 1, callback: updateOSDIRApp_d });
-                setupSlider('meanSpeedOSD_d', 'meanSpeedOSDValue_d', { fixedDigits: 0, callback: updateOSDIRApp_d });
-            } catch (error) { console.error("Error setting up sliders:", error); }
+                const plotDiv = document.getElementById(plotDivId);
+                if (!plotDiv || !d3) { throw new Error("Plot div or D3 library not found."); }
+
+                const margin = {top: 10, right: 40, bottom: 30, left: 40};
+                // Use setupPlotArea to handle SVG creation/clearing and dimensions
+                const { g, dims } = setupPlotArea(plotDivId, margin);
+
+                // Handle error or loading/empty states first
+                if (isError || !plotData || plotData.length < 2) {
+                    const displayText = isError ? message : (plotData && plotData.length === 0 ? "Simulation running..." : "Insufficient data.");
+                    g.append("text")
+                        .attr("x", dims.plotWidth / 2)
+                        .attr("y", dims.plotHeight / 2)
+                        .text(displayText)
+                        .attr("text-anchor", "middle")
+                        .attr("class", "plot-label")
+                        .attr("fill", isError ? "red" : "grey");
+                    return; // Stop rendering if no valid data or error
+                }
+
+                // Filter data for valid numbers (redundant if source is clean, but safe)
+                const validPlotData = plotData.filter(d => isFinite(d.time) && isFinite(d.speed) && isFinite(d.tension));
+                if (validPlotData.length < 2) throw new Error("Insufficient valid data points after filtering.");
+
+                // --- Scales & Axes ---
+                const timeExtent = d3.extent(validPlotData, d => d.time);
+                const speedExtent = d3.extent(validPlotData, d => d.speed);
+                const tensionExtent = d3.extent(validPlotData, d => d.tension);
+
+                // Check for invalid extents before scaling
+                if (timeExtent.some(v => !isFinite(v)) || speedExtent.some(v => !isFinite(v)) || tensionExtent.some(v => !isFinite(v))) {
+                    throw new Error("Invalid data extents calculated.");
+                }
+                // Ensure extents represent a range
+                if (timeExtent[1] <= timeExtent[0]) timeExtent[1] = timeExtent[0] + 1;
+                if (speedExtent[1] <= speedExtent[0]) speedExtent[1] = speedExtent[0] + 1;
+                if (tensionExtent[1] <= tensionExtent[0]) tensionExtent[1] = tensionExtent[0] + 0.001; // Smallest increment
+
+                const xScale = d3.scaleLinear().domain(timeExtent).range([0, dims.plotWidth]);
+                const ySpeedScale = d3.scaleLinear().domain(speedExtent).range([dims.plotHeight, 0]).nice();
+                const yTensionScale = d3.scaleLinear().domain(tensionExtent).range([dims.plotHeight, 0]).nice();
+
+                // Draw Axes using helper
+                drawAxes(g, xScale, ySpeedScale, yTensionScale, dims, margin, {
+                    x: "Time (s)", xOffset: 5,
+                    yLeft: "Speed (rpm)", yLeftColor: "#06b6d4", yLeftFormat: d3.format(".0f"), yLeftOffset: 10,
+                    yRight: "Tension (mN/m)", yRightColor: "#6366f1", yRightFormat: d3.format(".3f"), yRightOffset: 15
+                });
+
+                // --- Draw Lines using helper ---
+                const lineGen = (yScaleAccessor, yProp) => d3.line()
+                    .x(d => xScale(d.time))
+                    .y(d => yScaleAccessor(d[yProp]))
+                    .defined(d => d[yProp] !== null && isFinite(xScale(d.time)) && isFinite(yScaleAccessor(d[yProp]))); // Check finiteness
+
+                drawLine(g, validPlotData, lineGen(ySpeedScale, 'speed'), 'speed-line');
+                drawLine(g, validPlotData, lineGen(yTensionScale, 'tension'), 'tension-line');
+
+                // Optional: Add color classes if not defined in CSS
+                // g.select(".speed-line").attr("stroke", "#06b6d4");
+                // g.select(".tension-line").attr("stroke", "#6366f1");
+
+                console.log(`${context} rendered successfully with ${validPlotData.length} points.`);
+
+            } catch (error) {
+                console.error(`Error rendering ${context}:`, error);
+                displayPlotError(plotDivId, `OSDIR Plot Render Error: ${error.message}`); // Use helper for error display
+            }
         }
 
-        // Renders plots for ACTIVE apps initially
+        // --- Initialization Functions ---
+        function setupAllSliders() {
+             console.log("Setting up all sliders...");
+             try {
+                 // Fig 1 Sliders
+                 setupSlider('fig1PhaseSlider', 'fig1PhaseValue', { fixedDigits: 0, callback: renderDilationalResponsePlot });
+                 setupSlider('fig1FreqSlider', 'fig1FrequencyValue', { fixedDigits: 1, callback: renderDilationalResponsePlot });
+                 // Wave Damping Sliders
+                 setupSlider('elasticModulusWave', 'elasticModulusWaveValue', { fixedDigits: 0, callback: updateWaveDampingPlot });
+                 setupSlider('relaxationTimeWave', 'relaxationTimeWaveValue', { fixedDigits: 4, logScale: true, callback: updateWaveDampingPlot });
+                 // Langmuir Select
+                 const monolayerSelect = document.getElementById('monolayerPhase');
+                 if (monolayerSelect) { monolayerSelect.onchange = updateLangmuirPlot; } else { console.warn("Monolayer select not found"); }
+                 // OSDIR Sliders
+                 setupSlider('staticTensionOSD_d', 'staticTensionOSDValue_d', { fixedDigits: 3, logScale: true, callback: updateOSDIRApp_d });
+                 setupSlider('combinedModulusOSD_d', 'combinedModulusOSDValue_d', { fixedDigits: 1, callback: updateOSDIRApp_d });
+                 setupSlider('meanSpeedOSD_d', 'meanSpeedOSDValue_d', { fixedDigits: 0, callback: updateOSDIRApp_d });
+                 console.log("Slider setup complete.");
+             } catch (error) { console.error("Error setting up sliders:", error); }
+         }
+
         function renderAllPlotsInitial() {
-             const initialRenderFunctions = [ renderDilationalResponsePlot, updateWaveDampingPlot, updateLangmuirPlot, updateOSDIRApp_d ];
+            console.log("Performing initial plot rendering...");
+            // List functions that ONLY render static plots or plots dependent on NON-OSDIR sliders initially
+             const initialRenderFunctions = [
+                 renderDilationalResponsePlot,
+                 updateWaveDampingPlot,
+                 updateLangmuirPlot
+             ];
              initialRenderFunctions.forEach(renderFunc => {
                  try { renderFunc(); } catch (e) { console.error(`Error during initial call to ${renderFunc.name}:`, e); }
              });
+
+             // Explicitly call updateOSDIRApp_d ONCE after sliders are set up.
+             // This ensures the initial animation and OSDIR plot render correctly.
+            console.log("Performing initial OSDIR update after slider setup...");
+            try {
+                // Ensure updateOSDIRApp_d exists before calling
+                if (typeof updateOSDIRApp_d === 'function') {
+                     updateOSDIRApp_d();
+                } else {
+                     console.error("updateOSDIRApp_d function is not defined when trying initial call.");
+                     displayPlotError('osdir-plot_d', `Error: OSDIR function missing.`);
+                }
+            } catch (e) {
+                 console.error(`Error during explicit initial call to updateOSDIRApp_d:`, e);
+                 // Optionally display error in the OSDIR plot area if possible
+                 try { displayPlotError('osdir-plot_d', `Initial OSDIR Error: ${e.message}`); } catch(pe) {/*ignore*/}
+            }
+            console.log("Initial plot rendering attempted.");
          }
 
-        // Sets up smooth scrolling for navigation links
         function setupSmoothScrolling(){
-            try {
-                document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        if(targetElement) {
-                            const elementPosition = targetElement.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset - 76;
-                            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                        } else { console.warn("Smooth scroll target not found:", targetId); }
-                    });
-                });
-            } catch (e) { console.error("Error setting up smooth scrolling:", e); }
-        }
+             try {
+                 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                     anchor.addEventListener('click', function (e) {
+                         e.preventDefault();
+                         const targetId = this.getAttribute('href');
+                         const targetElement = document.querySelector(targetId);
+                         if(targetElement) {
+                             const elementPosition = targetElement.getBoundingClientRect().top;
+                             const offsetPosition = elementPosition + window.pageYOffset - 76; // Match nav height
+                             window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                         } else { console.warn("Smooth scroll target not found:", targetId); }
+                     });
+                 });
+             } catch (e) { console.error("Error setting up smooth scrolling:", e); }
+         }
 
     </script>
 
 </body>
 </html>
-
+```
