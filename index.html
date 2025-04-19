@@ -446,33 +446,179 @@
           }
 
         /** OSDIR: Updates drop shape, animation, and plot */
+                /**
+         * 3.5 Oscillating Spinning Drop: Updates drop shape, animation, and plot.
+         */
+        let osdirAnimationId_d = null;
+        let osdirStartTime = null;
+        let osdirTimeData = [];
         function updateOSDIRApp_d() {
-            const context = "OSDIR App"; if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; osdirStartTime = null; osdirTimeData = [];
-            const elements = { gamma0Slider: document.getElementById('staticTensionOSD_d'), EGSlider: document.getElementById('combinedModulusOSD_d'), speedSlider: document.getElementById('meanSpeedOSD_d'), svgTube: d3.select("#osdir-tube-svg_d"), plotDiv: document.getElementById('osdir-plot_d'), restartButton: document.getElementById('osdir-restart-button') };
             try {
-                if (Object.values(elements).some(el => !el || (el.nodeName && el.nodeName === 'SELECT' && el.empty && el.empty())) || elements.svgTube.empty() ) { throw new Error("Missing required OSDIR elements."); }
-                const dropRect = elements.svgTube.select("#osdir-drop-rect_d"); if (dropRect.empty()) { throw new Error("Missing OSDIR drop rect element."); }
-                 if (typeof elements.gamma0Slider.actualValue === 'undefined' || typeof elements.EGSlider.actualValue === 'undefined' || typeof elements.speedSlider.actualValue === 'undefined') { throw new Error("OSDIR slider actualValue not initialized."); }
-                const gamma0_mNm = elements.gamma0Slider.actualValue; const E_plus_G_mNm = elements.EGSlider.actualValue; const omega_rot_mean_rpm = elements.speedSlider.actualValue;
-                if (isNaN(gamma0_mNm) || gamma0_mNm <= 0 || isNaN(E_plus_G_mNm) || isNaN(omega_rot_mean_rpm) || omega_rot_mean_rpm <= 0) { throw new Error("Invalid OSDIR slider values."); }
-                const gamma0 = gamma0_mNm / 1000; const E_plus_G = E_plus_G_mNm / 1000; const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60;
-                const tubeWidth = parseFloat(elements.svgTube.attr("width")) || 300; const tubeHeight = parseFloat(elements.svgTube.attr("height")) || 50; const tubeRadius_visual = tubeHeight / 2 - 10; const dropMaxHeight_visual = tubeRadius_visual * 1.6; const delta_rho = 100; const dropVolume = 1e-9; const oscillation_freq_hz = 0.1; const omega_osc = oscillation_freq_hz * 2 * Math.PI; const speed_amplitude_frac = 0.05;
+                const gamma0Slider = document.getElementById('staticTensionOSD_d');
+                const EGSlider = document.getElementById('combinedModulusOSD_d');
+                const speedSlider = document.getElementById('meanSpeedOSD_d');
+                const svgTube = d3.select("#osdir-tube-svg_d");
+                const dropRect = svgTube.select("#osdir-drop-rect_d");
+                const plotDiv = document.getElementById('osdir-plot_d');
+                const restartButton = document.getElementById('osdir-restart-button');
+                if (!gamma0Slider || !EGSlider || !speedSlider || !svgTube || !dropRect || !plotDiv || !restartButton) return;
+
+                const gamma0_mNm = gamma0Slider.actualValue || 0.01;
+                const E_plus_G_mNm = EGSlider.actualValue || 2.0;
+                const omega_rot_mean_rpm = speedSlider.actualValue || 4000;
+                if (isNaN(gamma0_mNm) || gamma0_mNm <= 0 || isNaN(E_plus_G_mNm) || isNaN(omega_rot_mean_rpm) || omega_rot_mean_rpm <= 0) return;
+
+                const gamma0 = gamma0_mNm / 1000;
+                const E_plus_G = E_plus_G_mNm / 1000;
+                const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60;
+
+                const tubeWidth = parseFloat(svgTube.attr("width")) || 300;
+                const tubeHeight = parseFloat(svgTube.attr("height")) || 50;
+                const tubeRadius_visual = tubeHeight / 2 - 10;
+                const dropMaxHeight_visual = tubeRadius_visual * 1.6;
+
+                const delta_rho = 100;
+                const dropVolume = 1e-9;
+
+                const oscillation_freq_hz = 0.1;
+                const omega_osc = oscillation_freq_hz * 2 * Math.PI;
+                const speed_amplitude_frac = 0.05;
+
                 osdirStartTime = Date.now();
+                osdirTimeData = []; // Clear data for new run
+
                 function animateOSDIRDrop() {
-                     if (!osdirStartTime) return;
-                      try {
-                         const elapsed = (Date.now() - osdirStartTime) / 1000; const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed)); if (current_omega_rot <= 1e-6) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const R_approx_term = (4 * gamma0) / (delta_rho * current_omega_rot**2); if (!isFinite(R_approx_term) || R_approx_term <= 0) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; } const R_approx = Math.pow(R_approx_term, 1/3); if (!isFinite(R_approx) || R_approx <= 1e-9) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; } const L_approx = dropVolume / (Math.PI * R_approx**2); if (!isFinite(L_approx) || L_approx <= 0) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const R_mean_at_mean_speed_term = (4 * gamma0) / (delta_rho * omega_rot_mean**2); const R_mean_at_mean_speed = Math.pow(Math.max(1e-12, R_mean_at_mean_speed_term), 1/3); const L_mean_at_mean_speed = dropVolume / (Math.PI * Math.max(1e-9, R_mean_at_mean_speed)**2); const visual_L_scale_factor = (L_mean_at_mean_speed > 1e-9 && isFinite(L_mean_at_mean_speed)) ? (tubeWidth * 0.7) / L_mean_at_mean_speed : 1; const visual_L = Math.max(10, Math.min(tubeWidth * 0.98, L_approx * visual_L_scale_factor)); const visual_R = Math.min(dropMaxHeight_visual / 2, Math.max(1, R_approx * visual_L_scale_factor)); if (!isFinite(visual_L) || !isFinite(visual_R)) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const x_pos = (tubeWidth - visual_L) / 2; dropRect.attr("x", x_pos).attr("y", tubeHeight / 2 - visual_R).attr("width", visual_L).attr("height", visual_R * 2).attr("rx", visual_R).attr("ry", visual_R);
-                         const strain_approx = speed_amplitude_frac * Math.sin(omega_osc * elapsed) * 2; const phi_rad_osdir_conceptual = Math.PI / 6; const tension_change_amp = Math.max(0.1, E_plus_G) * speed_amplitude_frac * 2; const current_gamma = gamma0 + tension_change_amp * Math.sin(omega_osc * elapsed + phi_rad_osdir_conceptual);
-                         if (elapsed <= (1 / oscillation_freq_hz) * 2.1) { osdirTimeData.push({ time: elapsed, speed: current_omega_rot * 60 / (2 * Math.PI), tension: Math.max(1e-4, current_gamma * 1000) }); } else { renderOSDIRPlot(osdirTimeData); cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return; } osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop);
-                      } catch (animError) { console.error("Error during OSDIR animation:", animError); if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; renderOSDIRPlot(null, true); }
+                    if (!osdirStartTime) return;
+                    const elapsed = (Date.now() - osdirStartTime) / 1000;
+                    const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed));
+                    if (current_omega_rot <= 1e-6) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return; }
+
+                    const R_approx_term = (4 * gamma0) / (delta_rho * current_omega_rot**2);
+                     if (isNaN(R_approx_term) || R_approx_term <= 0) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return; }
+                    const R_approx = Math.pow(R_approx_term, 1/3);
+                    if (isNaN(R_approx) || R_approx <= 1e-9) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return;}
+                    const L_approx = dropVolume / (Math.PI * R_approx**2);
+                    if (isNaN(L_approx)) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return;}
+
+                    const R_mean_at_mean_speed_term = (4 * gamma0) / (delta_rho * omega_rot_mean**2);
+                    const R_mean_at_mean_speed = Math.pow(Math.max(1e-12, R_mean_at_mean_speed_term), 1/3);
+                    const L_mean_at_mean_speed = dropVolume / (Math.PI * Math.max(1e-9, R_mean_at_mean_speed)**2);
+                    const visual_L_scale_factor = (L_mean_at_mean_speed > 1e-9) ? (tubeWidth * 0.7) / L_mean_at_mean_speed : 1;
+                    const visual_L = Math.max(10, Math.min(tubeWidth * 0.95, L_approx * visual_L_scale_factor));
+                    const visual_R = Math.min(dropMaxHeight_visual / 2, Math.max(1, R_approx * visual_L_scale_factor));
+
+                    const x_pos = (tubeWidth - visual_L) / 2;
+                    dropRect.attr("x", x_pos)
+                            .attr("y", tubeHeight / 2 - visual_R)
+                            .attr("width", visual_L)
+                            .attr("height", visual_R * 2)
+                            .attr("rx", visual_R)
+                            .attr("ry", visual_R);
+
+                    const strain = speed_amplitude_frac * Math.sin(omega_osc * elapsed) * 2;
+                    const phi_rad_osdir = Math.PI / 2 / (1 + E_plus_G / Math.max(1e-9, gamma0 * 0.1));
+                    const tension_change_amp = E_plus_G * speed_amplitude_frac * 2;
+                    const current_gamma = gamma0 + tension_change_amp * Math.sin(omega_osc * elapsed + phi_rad_osdir);
+
+                    if (elapsed <= (2 * Math.PI / omega_osc) * 2.1) {
+                       osdirTimeData.push({
+                           time: elapsed,
+                           speed: current_omega_rot * 60 / (2 * Math.PI),
+                           tension: Math.max(1e-4, current_gamma * 1000)
+                       });
+                    } else {
+                       renderOSDIRPlot(osdirTimeData);
+                       cancelAnimationFrame(osdirAnimationId_d);
+                       osdirAnimationId_d = null;
+                       return;
+                    }
+
+                    osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop);
                 }
-                animateOSDIRDrop(); renderOSDIRPlot(osdirTimeData);
-                elements.restartButton.onclick = () => { if (osdirAnimationId_d) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; } osdirStartTime = Date.now(); osdirTimeData = []; animateOSDIRDrop(); };
-            } catch (error) { console.error(`Error updating ${context}:`, error); renderOSDIRPlot(null, true); }
+
+                if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d);
+                osdirAnimationId_d = null;
+                animateOSDIRDrop();
+                renderOSDIRPlot(osdirTimeData); // Render initial empty plot
+
+                restartButton.onclick = () => {
+                    if (osdirAnimationId_d) {
+                        cancelAnimationFrame(osdirAnimationId_d);
+                        osdirAnimationId_d = null;
+                    }
+                    osdirStartTime = Date.now();
+                    osdirTimeData = [];
+                    animateOSDIRDrop();
+                };
+            } catch (error) {
+                 console.error("Error updating OSDIR App:", error);
+            }
         }
+
+        /**
+         * Renders the plot for OSDIR: Speed vs. Tension.
+         */
+        function renderOSDIRPlot(plotData) {
+             try {
+                const plotDiv = document.getElementById('osdir-plot_d');
+                if (!plotDiv || !d3) return;
+                d3.select(plotDiv).select("svg").remove();
+
+                const margin = {top: 10, right: 40, bottom: 30, left: 40};
+                const containerWidth = plotDiv.clientWidth;
+                const containerHeight = plotDiv.clientHeight;
+                if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <=0) return;
+
+                const width = containerWidth - margin.left - margin.right;
+                const height = containerHeight - margin.top - margin.bottom;
+                if (width <= 0 || height <= 0) return;
+
+                const svg = d3.select(plotDiv).append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+               if (!plotData || plotData.length < 2) {
+                    svg.append("text").attr("x", width/2).attr("y", height/2).text("Running simulation...").attr("text-anchor", "middle").attr("class", "plot-label");
+                    return;
+               }
+                const validPlotData = plotData.filter(d => !isNaN(d.time) && !isNaN(d.speed) && !isNaN(d.tension));
+                 if (validPlotData.length < 2) {
+                     svg.append("text").attr("x", width/2).attr("y", height/2).text("Insufficient valid data").attr("text-anchor", "middle").attr("class", "plot-label");
+                     return;
+                 }
+
+                const xScale = d3.scaleLinear().domain(d3.extent(validPlotData, d => d.time)).range([0, width]);
+                const ySpeedScale = d3.scaleLinear().domain(d3.extent(validPlotData, d => d.speed)).range([height, 0]).nice();
+                const yTensionScale = d3.scaleLinear().domain(d3.extent(validPlotData, d => d.tension)).range([height, 0]).nice();
+
+                svg.append("g").attr("class", "x axis").attr("transform", `translate(0,${height})`).call(d3.axisBottom(xScale).ticks(5).tickFormat(d3.format(".1f")));
+                svg.append("g").attr("class", "y axis").call(d3.axisLeft(ySpeedScale).ticks(5).tickFormat(d3.format(".0f"))).attr("stroke", "#14b8a6");
+                svg.append("g").attr("class", "y axis").attr("transform", `translate(${width},0)`).call(d3.axisRight(yTensionScale).ticks(5).tickFormat(d3.format(".3f"))).attr("stroke", "#a855f7");
+
+                svg.append("text").attr("x", width / 2).attr("y", height + margin.bottom - 5).text("Time (s)").attr("class", "plot-label").attr("text-anchor", "middle");
+                svg.append("text").attr("transform", "rotate(-90)").attr("y", -margin.left + 10).attr("x", -height / 2).text("Speed (rpm)").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", "#14b8a6");
+                svg.append("text").attr("transform", "rotate(90)").attr("y", -width - margin.right + 15).attr("x", height / 2).text("Tension (mN/m)").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", "#a855f7");
+
+                const speedLine = d3.line().x(d => xScale(d.time)).y(d => ySpeedScale(d.speed));
+                const tensionLine = d3.line().x(d => xScale(d.time)).y(d => yTensionScale(d.tension));
+
+                svg.append("path").datum(validPlotData).attr("class", "line speed-line d3-plot").attr("d", speedLine).attr("fill", "none");
+                svg.append("path").datum(validPlotData).attr("class", "line tension-line d3-plot").attr("d", tensionLine).attr("fill", "none");
+             } catch (error) {
+                  console.error("Error rendering OSDIR plot:", error);
+                  const plotDiv = document.getElementById('osdir-plot_d');
+                  if(plotDiv) {
+                      d3.select(plotDiv).select("svg").remove();
+                      d3.select(plotDiv).append("svg")
+                        .attr("width", plotDiv.clientWidth)
+                        .attr("height", plotDiv.clientHeight)
+                        .append("text").attr("x", 10).attr("y", 20).text("Error rendering plot.").style("font-size", "10px").attr("fill", "red");
+                  }
+             }
+         }
+
 
         // --- Initialization Function ---
         function setupAllSliders() {
