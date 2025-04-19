@@ -13,34 +13,18 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-        /* Custom Styles - Light Blue Theme */
         :root {
-            --bg-color: #f0f9ff; /* sky-50 */
-            --text-color-main: #0369a1; /* sky-700 */
-            --text-color-header: #0c4a6e; /* sky-900 */
-            --text-color-accent: #075985; /* sky-800 */
-            --text-color-subtle: #0ea5e9; /* sky-500 */
-            --border-color-light: #e0f2fe; /* sky-100 */
-            --border-color-medium: #bae6fd; /* sky-200 */
-            --border-color-dark: #7dd3fc; /* sky-300 */
-            --accent-color: #38bdf8; /* sky-400 */
-            --highlight-bg: #e0f2fe; /* sky-100 */
-            --vis-bg-color: #f8fafc; /* slate-50 */
-            --vis-border-color: #cbd5e1; /* slate-300 */
-            --header-grad-from: #0ea5e9; /* sky-500 */
-            --header-grad-to: #0369a1; /* sky-700 */
+            --bg-color: #f0f9ff; --text-color-main: #0369a1; --text-color-header: #0c4a6e;
+            --text-color-accent: #075985; --text-color-subtle: #0ea5e9; --border-color-light: #e0f2fe;
+            --border-color-medium: #bae6fd; --border-color-dark: #7dd3fc; --accent-color: #38bdf8;
+            --highlight-bg: #e0f2fe; --vis-bg-color: #f8fafc; --vis-border-color: #cbd5e1;
+            --header-grad-from: #0ea5e9; --header-grad-to: #0369a1;
         }
-
-        /* Base and Layout */
         html { scroll-padding-top: 76px; }
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; color: var(--text-color-main); background-color: var(--bg-color); font-size: 1rem; }
-        main.container { padding-top: 1rem; }
-
-        /* Fade-in animation */
+        main.container { padding-top: 2rem; padding-bottom: 1rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .dynamic-content { opacity: 0; animation: fadeIn 0.7s ease-out forwards; }
-
-        /* Form Elements */
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-color-accent); font-size: 0.9rem; }
         input[type="range"], select { width: 100%; padding: 0.5rem; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; background-color: white; font-size: 0.9rem; transition: border-color 0.2s ease; }
         input[type="range"]:focus, select:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--highlight-bg); }
@@ -50,88 +34,51 @@
         button { background-color: var(--accent-color); color: var(--text-color-header); padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; transition: background-color 0.2s ease, transform 0.1s ease; border: none; cursor: pointer; }
         button:hover { background-color: var(--border-color-dark); }
         button:active { transform: scale(0.98); }
-
-        /* Output & Containers */
         .output-box { background-color: var(--highlight-bg); border: 1px solid var(--border-color-medium); padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-top: 0.5rem; text-align: center; font-weight: 500; font-size: 0.85rem; color: var(--text-color-accent); min-height: 2.5rem; display: flex; align-items: center; justify-content: center; }
         .interactive-container { background-color: #ffffff; border: 1px solid var(--border-color-light); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
         .visualization-box { min-height: 200px; background-color: var(--vis-bg-color); border: 1px dashed var(--vis-border-color); border-radius: 0.375rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; margin-top: 1rem; text-align: center; position: relative; overflow: hidden; transition: background-color 0.3s ease; font-size: 0.9rem; }
         .visualization-box svg { display: block; margin: auto; max-width: 100%; height: auto; }
-
-        /* Table Styling */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
         th, td { border: 1px solid var(--border-color-medium); padding: 0.6rem; text-align: left; vertical-align: top; }
         th { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); position: static; z-index: 5; }
         tbody tr:nth-child(odd) { background-color: #f8fafc; }
         tbody tr:hover { background-color: var(--highlight-bg); }
         tbody tr.category-row td { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); }
-        @media (max-width: 768px) { /* Responsive Table */
-            #measurement-techniques-overview table { min-width: 800px; }
-            #measurement-techniques-overview th,
-            #measurement-techniques-overview td { white-space: nowrap; padding: 0.4rem; font-size: 0.8rem; }
-             #measurement-techniques-overview tr.category-row td { white-space: nowrap; }
-        }
-
-        /* Typography */
+        @media (max-width: 768px) { #measurement-techniques-overview table { min-width: 800px; } #measurement-techniques-overview th, #measurement-techniques-overview td { white-space: nowrap; padding: 0.4rem; font-size: 0.8rem; } #measurement-techniques-overview tr.category-row td { white-space: nowrap; } }
         h1, h2, h3, h4 { color: var(--text-color-header); font-weight: 700; line-height: 1.3; }
-        h1 { font-size: 2.25rem; }
-        h2 { font-size: 1.75rem; border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
-        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-        h4 { font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color-accent); }
+        h1 { font-size: 2.25rem; } h2 { font-size: 1.75rem; border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem; } h4 { font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color-accent); }
         p, li { color: var(--text-color-main); line-height: 1.7; margin-bottom: 1.25rem; font-size: 0.95rem; text-align: justify; }
         ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
         strong { color: var(--text-color-accent); font-weight: 600; }
         code { background-color: #e0f2fe; color: #0c4a6e; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
         blockquote { border-left: 4px solid var(--accent-color); padding: 0.75rem 1rem; margin: 1.5rem 0; font-style: italic; color: var(--text-color-subtle); background-color: var(--highlight-bg); font-size: 0.95rem; }
-
-        /* Section Backgrounds */
         .section-bg-white { background-color: #ffffff; }
-
-        /* Footer Styling */
         footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color-medium); }
         footer p { font-size: 0.8rem; line-height: 1.5; text-align: center; color: var(--text-color-main);}
-        footer a { color: var(--text-color-subtle); text-decoration: underline; }
-        footer a:hover { color: var(--text-color-header); }
-
-        /* Helper Text */
+        footer a { color: var(--text-color-subtle); text-decoration: underline; } footer a:hover { color: var(--text-color-header); }
         .instructional-text { font-size: 0.875rem; color: var(--text-color-subtle); margin-top: 0.5rem; margin-bottom: 1rem; text-align: center; }
         .approximation-note { font-size: 0.75rem; color: #ef4444; text-align: center; margin-top: 0.5rem; font-style: italic; }
-
-        /* Figures and Captions */
         figure { margin: 1.5rem auto; text-align: center; }
         figure svg { max-width: 100%; height: auto; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; margin: 0 auto 0.5rem auto; display: block; background-color: var(--vis-bg-color); }
         figcaption, .caption { font-size: 0.8rem; color: var(--text-color-subtle); margin-top: 0.25rem; text-align: center; }
-
-        /* Equations */
         .equation { display: block; text-align: center; margin: 1.25rem auto; font-size: 1.1rem; }
-
-        /* Key Concepts Box */
         .key-concept { border: 1px solid var(--border-color-medium); background-color: #f0f8ff; padding: 1rem; border-radius: 0.375rem; margin: 1.5rem 0; }
         .key-concept strong { color: var(--text-color-header); }
-
-        /* D3 Plot Styles */
         .d3-plot .axis path, .d3-plot .axis line { fill: none; stroke: #94a3b8; shape-rendering: crispEdges; stroke-width: 1px; }
         .d3-plot .axis text { font-size: 0.75rem; fill: #475569; font-family: sans-serif;}
         .d3-plot .grid line { stroke: #e2e8f0; stroke-opacity: 0.7; shape-rendering: crispEdges; }
-        .d3-plot .grid path { stroke-width: 0; }
-        .d3-plot .line { fill: none; stroke-width: 2px; }
-        .d3-plot path { fill: none; }
-        .d3-plot .area-line { stroke: #22c55e; }
-        .d3-plot .tension-line { stroke: #6366f1; }
-        .d3-plot .speed-line { stroke: #06b6d4; }
+        .d3-plot .grid path { stroke-width: 0; } .d3-plot .line { fill: none; stroke-width: 2px; } .d3-plot path { fill: none; }
+        .d3-plot .area-line { stroke: #22c55e; } .d3-plot .tension-line { stroke: #6366f1; } .d3-plot .speed-line { stroke: #06b6d4; }
+        .d3-plot .elastic-line { stroke: #3b82f6; } .d3-plot .viscous-line { stroke: #14b8a6; }
         .plot-label { font-size: 0.75rem; fill: var(--text-color-accent); text-anchor: middle; font-family: sans-serif;}
-
-        /* Schematic SVG styles */
         .liquid-fill { fill: #bfdbfe; } .oil-fill { fill: #fef9c3; } .gas-fill { fill: #f1f5f9; }
-        .interface-line { stroke: var(--text-color-accent); stroke-width: 1.5px; }
-        .geometry-stroke { stroke: #334155; } .geometry-fill { fill: #cbd5e1; }
-        .arrow-stroke { stroke: var(--text-color-header); stroke-width: 1.5px; }
-        .schematic-text { font-size: 10px; fill: var(--text-color-main); font-family: sans-serif; }
+        .interface-line { stroke: var(--text-color-accent); stroke-width: 1.5px; } .geometry-stroke { stroke: #334155; } .geometry-fill { fill: #cbd5e1; }
+        .arrow-stroke { stroke: var(--text-color-header); stroke-width: 1.5px; } .schematic-text { font-size: 10px; fill: var(--text-color-main); font-family: sans-serif; }
         .schematic-label { font-size: 11px; fill: var(--text-color-header); font-weight: 500; font-family: sans-serif;}
         .pendant-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; }
         .spinning-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; transition: all 0.2s ease-out; }
-        .capillary-tube { fill: #e2e8f0; stroke: #64748b; }
-        .needle-tip { fill: #94a3b8; }
-
+        .capillary-tube { fill: #e2e8f0; stroke: #64748b; } .needle-tip { fill: #94a3b8; }
     </style>
 </head>
 
@@ -164,212 +111,7 @@
         </div>
     </nav>
 
-    <main class="container mx-auto px-6 py-1">
-
-        <section id="intro" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">1. Fundamentals of Dilational Rheology</h2>
-            <p>Interfacial rheology characterizes the mechanical response of the boundary between immiscible phases. Dilational rheology specifically probes the interface's resistance to changes in its area (\(A\)), a property quantified by the complex dilational modulus, \(E^* = E' + iE''\). Here, \(E'\) (elastic/storage modulus) reflects the energy stored during deformation, while \(E''\) (viscous/loss modulus) represents energy dissipated. The structure of the interfacial layer (monolayer, multilayer, network) fundamentally dictates these moduli.</p>
-            <p>The modulus arises from the change in interfacial tension (\(\gamma\)) or surface pressure (\(\Pi = \gamma_0 - \gamma\)) with fractional area change:</p>
-            <div class="equation">
-                \[ E^* = \frac{d\gamma}{d(\ln A)} = -A \frac{d\gamma}{dA} = A \frac{d\Pi}{dA} \]
-            </div>
-            <p>For interfaces containing adsorbed species (e.g., surfactants, proteins, polymers), the response is dynamic. An area change (\(dA\)) modifies the surface concentration (\(\Gamma\)), altering \(\gamma\). The resulting tension gradient (\(\nabla \gamma\)) induces Marangoni stresses that resist the deformation. This <strong class="text-sky-700">Gibbs-Marangoni effect</strong> is often the dominant contribution to \(E'\). The measured \(E^*\) and phase angle (\(\varphi\), where \(\tan \varphi = E''/E'\)) are strongly dependent on the deformation frequency (\(\omega\)) relative to the timescales of molecular processes like adsorption/desorption kinetics, surface diffusion, and conformational changes. It is crucial to distinguish this dynamic modulus \(E^*\) from the equilibrium Gibbs elasticity, which relates equilibrium tension changes to equilibrium concentration changes.</p>
-
-            <figure>
-                <svg id="fig1-dilational-response" width="400" height="200" viewBox="0 0 400 200" aria-labelledby="fig1-title">
-                    <title id="fig1-title">Dilational Oscillatory Response</title>
-                    <g id="dilational-plot-group"></g>
-                </svg>
-                <figcaption class="caption">Figure 1: Conceptual illustration of oscillatory strain (\(\Delta \ln A\), green) and the resulting stress response (\(\Delta \gamma\), indigo), showing the phase angle \(\varphi\).</figcaption>
-            </figure>
-
-            <div class="interactive-container mt-4">
-                <h4 class="text-lg font-semibold mb-2">Explore the Dynamic Response</h4>
-                <p class="instructional-text">Adjust the phase angle (\(\varphi\)) and frequency (\(\omega\)) to visualize their conceptual effect on the stress-strain relationship. Note: This illustrates the concept but doesn't model specific relaxation kinetics.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <label for="fig1PhaseSlider">Phase Angle ($\varphi$, degrees):</label>
-                        <input type="range" id="fig1PhaseSlider" name="fig1PhaseSlider" min="0" max="90" value="30" step="1">
-                        <div class="output-box"><span id="fig1PhaseValue">30</span>°</div>
-                    </div>
-                    <div>
-                        <label for="fig1FreqSlider">Frequency ($\omega$, Hz):</label>
-                        <input type="range" id="fig1FreqSlider" name="fig1FreqSlider" min="0.1" max="2" value="0.5" step="0.1">
-                        <div class="output-box"><span id="fig1FrequencyValue">0.5</span> Hz</div>
-                    </div>
-                </div>
-            </div>
-
-            <blockquote class="my-4">
-                Accurate interpretation of dilational rheology requires considering the interplay between intrinsic interfacial viscoelasticity and the dynamics of mass transport and molecular rearrangement, particularly the frequency-dependent Gibbs-Marangoni effect.
-            </blockquote>
-        </<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfacial Rheology: Dilational Methods Concepts</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-        /* Custom Styles - Light Blue Theme */
-        :root {
-            --bg-color: #f0f9ff; /* sky-50 */
-            --text-color-main: #0369a1; /* sky-700 */
-            --text-color-header: #0c4a6e; /* sky-900 */
-            --text-color-accent: #075985; /* sky-800 */
-            --text-color-subtle: #0ea5e9; /* sky-500 */
-            --border-color-light: #e0f2fe; /* sky-100 */
-            --border-color-medium: #bae6fd; /* sky-200 */
-            --border-color-dark: #7dd3fc; /* sky-300 */
-            --accent-color: #38bdf8; /* sky-400 */
-            --highlight-bg: #e0f2fe; /* sky-100 */
-            --vis-bg-color: #f8fafc; /* slate-50 */
-            --vis-border-color: #cbd5e1; /* slate-300 */
-            --header-grad-from: #0ea5e9; /* sky-500 */
-            --header-grad-to: #0369a1; /* sky-700 */
-        }
-
-        /* Base and Layout */
-        html { scroll-padding-top: 76px; }
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; color: var(--text-color-main); background-color: var(--bg-color); font-size: 1rem; }
-        main.container { padding-top: 1rem; }
-
-        /* Fade-in animation */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .dynamic-content { opacity: 0; animation: fadeIn 0.7s ease-out forwards; }
-
-        /* Form Elements */
-        label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-color-accent); font-size: 0.9rem; }
-        input[type="range"], select { width: 100%; padding: 0.5rem; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; background-color: white; font-size: 0.9rem; transition: border-color 0.2s ease; }
-        input[type="range"]:focus, select:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--highlight-bg); }
-        input[type="range"] { cursor: pointer; accent-color: var(--accent-color); padding: 0; height: 0.5rem; appearance: none; background: var(--border-color-light); border-radius: 9999px; border: 1px solid var(--border-color-medium); }
-        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 1rem; height: 1rem; background: var(--accent-color); border-radius: 50%; cursor: pointer; border: 1px solid var(--text-color-accent); }
-        input[type="range"]::-moz-range-thumb { width: 1rem; height: 1rem; background: var(--accent-color); border-radius: 50%; cursor: pointer; border: 1px solid var(--text-color-accent); }
-        button { background-color: var(--accent-color); color: var(--text-color-header); padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; transition: background-color 0.2s ease, transform 0.1s ease; border: none; cursor: pointer; }
-        button:hover { background-color: var(--border-color-dark); }
-        button:active { transform: scale(0.98); }
-
-        /* Output & Containers */
-        .output-box { background-color: var(--highlight-bg); border: 1px solid var(--border-color-medium); padding: 0.5rem 0.75rem; border-radius: 0.375rem; margin-top: 0.5rem; text-align: center; font-weight: 500; font-size: 0.85rem; color: var(--text-color-accent); min-height: 2.5rem; display: flex; align-items: center; justify-content: center; }
-        .interactive-container { background-color: #ffffff; border: 1px solid var(--border-color-light); padding: 1.5rem; border-radius: 0.5rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
-        .visualization-box { min-height: 200px; background-color: var(--vis-bg-color); border: 1px dashed var(--vis-border-color); border-radius: 0.375rem; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; margin-top: 1rem; text-align: center; position: relative; overflow: hidden; transition: background-color 0.3s ease; font-size: 0.9rem; }
-        .visualization-box svg { display: block; margin: auto; max-width: 100%; height: auto; }
-
-        /* Table Styling */
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
-        th, td { border: 1px solid var(--border-color-medium); padding: 0.6rem; text-align: left; vertical-align: top; }
-        th { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); position: static; z-index: 5; }
-        tbody tr:nth-child(odd) { background-color: #f8fafc; }
-        tbody tr:hover { background-color: var(--highlight-bg); }
-        tbody tr.category-row td { background-color: var(--highlight-bg); font-weight: 600; color: var(--text-color-accent); }
-        @media (max-width: 768px) { /* Responsive Table */
-            #measurement-techniques-overview table { min-width: 800px; }
-            #measurement-techniques-overview th,
-            #measurement-techniques-overview td { white-space: nowrap; padding: 0.4rem; font-size: 0.8rem; }
-             #measurement-techniques-overview tr.category-row td { white-space: nowrap; }
-        }
-
-        /* Typography */
-        h1, h2, h3, h4 { color: var(--text-color-header); font-weight: 700; line-height: 1.3; }
-        h1 { font-size: 2.25rem; }
-        h2 { font-size: 1.75rem; border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.5rem; margin-bottom: 1.5rem; margin-top: 2rem; }
-        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-        h4 { font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color-accent); }
-        p, li { color: var(--text-color-main); line-height: 1.7; margin-bottom: 1.25rem; font-size: 0.95rem; text-align: justify; }
-        ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
-        strong { color: var(--text-color-accent); font-weight: 600; }
-        code { background-color: #e0f2fe; color: #0c4a6e; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
-        blockquote { border-left: 4px solid var(--accent-color); padding: 0.75rem 1rem; margin: 1.5rem 0; font-style: italic; color: var(--text-color-subtle); background-color: var(--highlight-bg); font-size: 0.95rem; }
-
-        /* Section Backgrounds */
-        .section-bg-white { background-color: #ffffff; }
-
-        /* Footer Styling */
-        footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color-medium); }
-        footer p { font-size: 0.8rem; line-height: 1.5; text-align: center; color: var(--text-color-main);}
-        footer a { color: var(--text-color-subtle); text-decoration: underline; }
-        footer a:hover { color: var(--text-color-header); }
-
-        /* Helper Text */
-        .instructional-text { font-size: 0.875rem; color: var(--text-color-subtle); margin-top: 0.5rem; margin-bottom: 1rem; text-align: center; }
-        .approximation-note { font-size: 0.75rem; color: #ef4444; text-align: center; margin-top: 0.5rem; font-style: italic; }
-
-        /* Figures and Captions */
-        figure { margin: 1.5rem auto; text-align: center; }
-        figure svg { max-width: 100%; height: auto; border: 1px solid var(--border-color-medium); border-radius: 0.375rem; margin: 0 auto 0.5rem auto; display: block; background-color: var(--vis-bg-color); }
-        figcaption, .caption { font-size: 0.8rem; color: var(--text-color-subtle); margin-top: 0.25rem; text-align: center; }
-
-        /* Equations */
-        .equation { display: block; text-align: center; margin: 1.25rem auto; font-size: 1.1rem; }
-
-        /* Key Concepts Box */
-        .key-concept { border: 1px solid var(--border-color-medium); background-color: #f0f8ff; padding: 1rem; border-radius: 0.375rem; margin: 1.5rem 0; }
-        .key-concept strong { color: var(--text-color-header); }
-
-        /* D3 Plot Styles */
-        .d3-plot .axis path, .d3-plot .axis line { fill: none; stroke: #94a3b8; shape-rendering: crispEdges; stroke-width: 1px; }
-        .d3-plot .axis text { font-size: 0.75rem; fill: #475569; font-family: sans-serif;}
-        .d3-plot .grid line { stroke: #e2e8f0; stroke-opacity: 0.7; shape-rendering: crispEdges; }
-        .d3-plot .grid path { stroke-width: 0; }
-        .d3-plot .line { fill: none; stroke-width: 2px; }
-        .d3-plot path { fill: none; }
-        .d3-plot .area-line { stroke: #22c55e; }
-        .d3-plot .tension-line { stroke: #6366f1; }
-        .d3-plot .speed-line { stroke: #06b6d4; }
-        .plot-label { font-size: 0.75rem; fill: var(--text-color-accent); text-anchor: middle; font-family: sans-serif;}
-
-        /* Schematic SVG styles */
-        .liquid-fill { fill: #bfdbfe; } .oil-fill { fill: #fef9c3; } .gas-fill { fill: #f1f5f9; }
-        .interface-line { stroke: var(--text-color-accent); stroke-width: 1.5px; }
-        .geometry-stroke { stroke: #334155; } .geometry-fill { fill: #cbd5e1; }
-        .arrow-stroke { stroke: var(--text-color-header); stroke-width: 1.5px; }
-        .schematic-text { font-size: 10px; fill: var(--text-color-main); font-family: sans-serif; }
-        .schematic-label { font-size: 11px; fill: var(--text-color-header); font-weight: 500; font-family: sans-serif;}
-        .pendant-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; }
-        .spinning-drop { fill: var(--oil-fill); stroke: var(--text-color-accent); stroke-width: 1px; transition: all 0.2s ease-out; }
-        .capillary-tube { fill: #e2e8f0; stroke: #64748b; }
-        .needle-tip { fill: #94a3b8; }
-
-    </style>
-</head>
-
-<body class="antialiased">
-
-    <svg width="0" height="0" style="position:absolute">
-      <defs>
-        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-          <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color-header)" />
-        </marker>
-      </defs>
-    </svg>
-
-    <header class="bg-gradient-to-r from-[var(--header-grad-from)] to-[var(--header-grad-to)] text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-5">
-            <h1 class="text-3xl font-bold">Interfacial Rheology: Dilational Methods Concepts</h1>
-             <p class="text-xs mt-2">Interactive concepts based on the review: Marquez, R.; Salager, J.-L. <a href="https://doi.org/10.3390/colloids9010014" target="_blank" rel="noopener" class="text-sky-200 hover:text-white underline">Colloids Interfaces 2025, 9, 14 [DOI]</a></p>
-        </div>
-    </header>
-
-    <nav class="sticky top-[76px] bg-sky-50 border-b border-sky-200 z-40 mb-4">
-        <div class="container mx-auto px-6 py-2 text-sm">
-            <span class="font-semibold text-sky-800 mr-4">Sections:</span>
-            <a href="#intro" class="text-sky-700 hover:text-sky-900 mr-3">1. Fundamentals</a> |
-            <a href="#measurement-techniques-overview" class="text-sky-700 hover:text-sky-900 mx-3">2. Overview</a> |
-            <a href="#dilational-methods" class="text-sky-700 hover:text-sky-900 mx-3">3. Methods</a> |
-            <a href="#recent-advances" class="text-sky-700 hover:text-sky-900 mx-3">4. Advances</a> |
-            <a href="#applications" class="text-sky-700 hover:text-sky-900 mx-3">5. Applications</a> |
-            <a href="#conclusions" class="text-sky-700 hover:text-sky-900 ml-3">6. Conclusions</a>
-        </div>
-    </nav>
-
-    <main class="container mx-auto px-6 py-1">
+    <main class="container mx-auto px-6 py-2">
 
         <section id="intro" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
             <h2 class="text-2xl font-bold">1. Fundamentals of Dilational Rheology</h2>
@@ -436,6 +178,26 @@
                  <figcaption class="caption">Figure 2: Conceptual schematic of a surface wave measurement setup.</figcaption>
             </figure>
              <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Access to high frequencies (\(10 - 10^5\) Hz).</li><li>Probes fast relaxation processes.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Experimentally complex.</li><li>Interpretation heavily model-dependent.</li><li>Difficult to deconvolve \(E'\) and \(E''\).</li><li>Mainly for low-viscosity liquids.</li></ul></div></div>
+             <div class="interactive-container mt-4">
+                 <h4 class="text-lg font-semibold mb-2">Conceptual Illustration: Wave Damping vs. Frequency</h4>
+                 <p class="instructional-text">Visualize how the viscous modulus \(E''\) (related to damping \(\alpha\)) typically peaks at frequencies (\(\omega\)) related to the characteristic relaxation time (\(\tau_{rel}\)) of the interface, based on a simple Maxwell model (\(E^* = E'_{\infty} \frac{i\omega\tau}{1+i\omega\tau}\)).</p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                     <div>
+                         <label for="elasticModulusWave">High-Frequency Elasticity ($E'_{\infty}$, mN/m):</label>
+                         <input type="range" id="elasticModulusWave" name="elasticModulusWave" min="1" max="200" value="50" step="1">
+                         <div class="output-box"><span id="elasticModulusWaveValue">50</span> mN/m</div>
+                     </div>
+                     <div>
+                         <label for="relaxationTimeWave">Relaxation Time ($\tau_{rel}$, s):</label>
+                         <input type="range" id="relaxationTimeWave" name="relaxationTimeWave" min="0.0001" max="1" value="0.01" step="0.0001">
+                         <div class="output-box"><span id="relaxationTimeWaveValue">0.0100</span> s</div>
+                     </div>
+                 </div>
+                 <div class="visualization-box">
+                     <div id="wave-damping-plot" class="w-full h-64 d3-plot"></div>
+                     <p class="text-xs mt-2 caption">Conceptual plot of \(E'\) (blue) and \(E''\) (teal) vs. Log Frequency (\(\log_{10}(\omega\tau_{rel})\)). Peak in \(E''\) indicates maximum energy dissipation near \(\omega \approx 1/\tau_{rel}\).</p>
+                 </div>
+             </div>
 
             <h3 class="text-xl font-semibold mt-6 mb-2">3.2 Oscillating Barrier Method</h3>
             <p class="text-sm mb-3">Primarily for <strong>insoluble monolayers</strong>. Barriers change area \(A\), measure surface pressure change \(\Delta \Pi\) to calculate \(E^*\).</p>
@@ -444,6 +206,26 @@
                  <figcaption class="caption">Figure 3: Conceptual schematic of an oscillating barrier Langmuir trough.</figcaption>
             </figure>
              <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Direct area control for insoluble films.</li><li>Allows study of 2D phase behavior.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Insoluble/slowly relaxing systems only.</li><li>Assumes uniform compression.</li><li>Risk of film leakage.</li><li>Low frequency (\(< 1\) Hz).</li></ul></div></div>
+             <div class="interactive-container mt-4">
+                 <h4 class="text-lg font-semibold mb-2">Conceptual Illustration: Langmuir Isotherm & Modulus</h4>
+                 <p class="instructional-text">Visualize the typical surface pressure (\(\Pi\)) vs. area per molecule (\(A\)) isotherm and the corresponding dilational modulus \(E' \approx -A (d\Pi/dA)\) during compression of an insoluble monolayer. Select a phase to see its characteristic stiffness.</p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                     <div>
+                         <label for="monolayerPhase">Monolayer Phase Behavior:</label>
+                         <select id="monolayerPhase" name="monolayerPhase" class="cursor-pointer">
+                              <option value="G">Gas (G)</option>
+                              <option value="LE" selected>Liquid-Expanded (LE)</option>
+                              <option value="LC">Liquid-Condensed (LC)</option>
+                              <option value="S">Solid (S)</option>
+                          </select>
+                     </div>
+                     <div></div>
+                 </div>
+                 <div class="visualization-box">
+                     <div id="langmuir-plot-svg" class="w-full h-64 d3-plot"></div>
+                     <p class="text-xs mt-2 caption">Conceptual \(\Pi\)-A isotherm (blue) and derived Elastic Modulus \(E'\) (red, dashed).</p>
+                 </div>
+             </div>
 
             <h3 class="text-xl font-semibold mt-6 mb-2">3.3 Oscillating Pendant Drop (OPD)</h3>
             <p class="text-sm mb-3">Oscillates drop volume, analyzes shape via Young-Laplace equation to get \(A(t)\) and \(\gamma(t)\), yielding \(E^*\).</p>
@@ -472,7 +254,6 @@
                  <figcaption class="caption">Figure 6: Schematic of an elongated drop inside a rotating capillary (OSDIR).</figcaption>
             </figure>
             <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Unique for (ultra-)low $\gamma$.</li><li>Crucial near HLD=0.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Measures combined modulus (\(E+G\)).</li><li>Requires elongation (\(L/R > 4\)) for Vonnegut validity.</li><li>Complex flow field.</li><li>Low frequency (\(< 0.3\) Hz).</li></ul></div></div>
-            {/* Interactive App for OSDIR */}
             <div class="interactive-container mt-4">
                 <h4 class="text-lg font-semibold mb-2">Conceptual Illustration: OSDIR Dynamics</h4>
                 <p class="instructional-text">Visualize how drop length changes conceptually with rotation speed and tension (Vonnegut scaling: \(L \propto V / R^2 \propto V \omega_{rot}^{4/3} / \gamma^{2/3}\)), and how tension responds to speed oscillations based on \(E+G\).</p>
@@ -490,6 +271,7 @@
                 </div>
             </div>
         </section>
+
         <section id="recent-advances" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
             <h2 class="text-2xl font-bold">4. Recent Advances in Dilational Methods</h2>
             <p>Research continues to refine techniques and extend capabilities, including probing thermal fluctuations and using microfluidic platforms.</p>
@@ -559,58 +341,29 @@
     </main>
 
     <script>
-        // Global Animation IDs & Data (Only for active apps)
         let osdirAnimationId_d = null;
         let osdirStartTime = null;
         let osdirTimeData = [];
 
-        // General Setup on DOM Load
         document.addEventListener('DOMContentLoaded', function () {
-            // console.log("DOM Content Loaded. Starting Final Setup..."); // Optional console log
             try {
                 setupAllSliders();
                 renderAllPlotsInitial();
                 setupSmoothScrolling();
-                // Explicitly typeset MathJax after initial content/setup, with a slight delay
                 if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
-                    setTimeout(() => { // Ensure DOM is fully ready
-                        MathJax.typesetPromise().then(() => {
-                            // console.log("MathJax typesetting complete."); // Optional console log
-                        }).catch((err) => console.error('MathJax typesetting failed:', err));
+                    setTimeout(() => {
+                        MathJax.typesetPromise().catch((err) => console.error('MathJax typesetting failed:', err));
                     }, 0);
-                } else {
-                    console.warn("MathJax or typesetPromise not available.");
-                }
-                // console.log("Initial Setup Completed Successfully."); // Optional console log
-            } catch (error) {
-                console.error("CRITICAL ERROR during initial setup:", error);
-                alert("A critical error occurred during page initialization.");
-            }
+                } else { console.warn("MathJax or typesetPromise not available."); }
+            } catch (error) { console.error("CRITICAL ERROR during initial setup:", error); alert("A critical error occurred during page initialization."); }
         });
 
-        // --- Helper Function: Setup Slider ---
-        // Sets up interactive range sliders, handling linear/log scales and callbacks.
-        function setupSlider(sliderId, valueId, options = {}) {
-            const slider = document.getElementById(sliderId); const valueDisplay = document.getElementById(valueId); if (!slider || !valueDisplay) { return; }
-            const { fixedDigits = 1, logScale = false, callback = null } = options; const minAttr = parseFloat(slider.min); const maxAttr = parseFloat(slider.max); let safeMin = isNaN(minAttr) ? (logScale ? 1e-6 : 0) : (logScale ? Math.max(1e-9, minAttr) : minAttr); let safeMax = isNaN(maxAttr) ? safeMin * (logScale ? 1000 : 100) : (logScale ? Math.max(safeMin * 1.1, maxAttr) : Math.max(safeMin + 1e-9, maxAttr)); if (safeMax <= safeMin) { safeMax = safeMin * (logScale ? 10 : 2); if (safeMax <= safeMin) safeMax = safeMin + 1; } slider.logMinVal = safeMin; slider.logMaxVal = safeMax;
-            function calculateActualValue() { const rawValue = parseFloat(slider.value); if (logScale) { const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; const sliderMinInternal = 0; const sliderMaxInternal = 100; const sliderRangeInternal = sliderMaxInternal - sliderMinInternal; if (sliderRangeInternal <= 0 || !isFinite(range) || range <= 0) { slider.actualValue = slider.logMinVal; return; } const normalizedSliderValue = Math.max(0, Math.min(1, (rawValue - sliderMinInternal) / sliderRangeInternal)); const valueLog = minLog + normalizedSliderValue * range; slider.actualValue = Math.pow(10, valueLog); } else { slider.actualValue = rawValue; } if (!isFinite(slider.actualValue)) { slider.actualValue = logScale ? slider.logMinVal : safeMin; } }
-            function updateDisplayAndTriggerCallback() { const currentSlider = document.getElementById(sliderId); const currentValueDisplay = document.getElementById(valueId); if (!currentSlider || !currentValueDisplay) return; try { calculateActualValue(); const valToFormat = slider.actualValue; let displayVal; if (typeof valToFormat !== 'number' || !isFinite(valToFormat)) { displayVal = "NaN"; } else if (logScale && Math.abs(valToFormat) > 1e-9 && Math.abs(valToFormat) < 0.01) { displayVal = valToFormat.toExponential(fixedDigits); } else if (Math.abs(valToFormat) < 1 && fixedDigits > 0 && Math.abs(valToFormat) > 1e-12) { const numDigits = Math.max(fixedDigits, Math.ceil(-Math.log10(Math.abs(valToFormat))) + 1); displayVal = valToFormat.toFixed(Math.min(numDigits, 6)); } else if (Math.abs(valToFormat) < 100 && fixedDigits > 0) { displayVal = valToFormat.toFixed(fixedDigits); } else { displayVal = valToFormat.toFixed(Math.max(0, fixedDigits)); } currentValueDisplay.textContent = displayVal; if (typeof callback === 'function') { callback(); } } catch (e) { console.error("Error updating slider", sliderId, e); currentValueDisplay.textContent = "Error"; } }
-            const initialValueAttr = slider.getAttribute('value'); let initialActualValue = initialValueAttr ? parseFloat(initialValueAttr) : (logScale ? slider.logMinVal : safeMin); if (logScale) { if (!isFinite(initialActualValue) || initialActualValue < slider.logMinVal || initialActualValue > slider.logMaxVal) { initialActualValue = slider.logMinVal; } const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; let initialSliderPos = 0; if (range > 0 && initialActualValue > 0 && isFinite(range)) { const valueLog = Math.log10(initialActualValue); initialSliderPos = Math.round(((valueLog - minLog) / range) * 100); } slider.min = "0"; slider.max = "100"; slider.step = "1"; slider.value = initialSliderPos; } else { if (!isFinite(initialActualValue) || initialActualValue < safeMin || initialActualValue > safeMax) initialActualValue = safeMin; slider.min = safeMin.toString(); slider.max = safeMax.toString(); const range = safeMax - safeMin; let step = (range / 100); if (range > 0) { const magnitude = Math.pow(10, Math.floor(Math.log10(step))); step = Math.max(1e-6, magnitude / 10); } else { step = 1e-6; } slider.step = step.toExponential(1); slider.value = initialActualValue; } slider.oninput = updateDisplayAndTriggerCallback; calculateActualValue(); updateDisplayAndTriggerCallback();
-        }
-
-        // --- D3 Plotting Helper Functions ---
-        // Gets plot dimensions safely
+        function setupSlider(sliderId, valueId, options = {}) { const slider = document.getElementById(sliderId); const valueDisplay = document.getElementById(valueId); if (!slider || !valueDisplay) { return; } const { fixedDigits = 1, logScale = false, callback = null } = options; const minAttr = parseFloat(slider.min); const maxAttr = parseFloat(slider.max); let safeMin = isNaN(minAttr) ? (logScale ? 1e-6 : 0) : (logScale ? Math.max(1e-9, minAttr) : minAttr); let safeMax = isNaN(maxAttr) ? safeMin * (logScale ? 1000 : 100) : (logScale ? Math.max(safeMin * 1.1, maxAttr) : Math.max(safeMin + 1e-9, maxAttr)); if (safeMax <= safeMin) { safeMax = safeMin * (logScale ? 10 : 2); if (safeMax <= safeMin) safeMax = safeMin + 1; } slider.logMinVal = safeMin; slider.logMaxVal = safeMax; function calculateActualValue() { const rawValue = parseFloat(slider.value); if (logScale) { const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; const sliderMinInternal = 0; const sliderMaxInternal = 100; const sliderRangeInternal = sliderMaxInternal - sliderMinInternal; if (sliderRangeInternal <= 0 || !isFinite(range) || range <= 0) { slider.actualValue = slider.logMinVal; return; } const normalizedSliderValue = Math.max(0, Math.min(1, (rawValue - sliderMinInternal) / sliderRangeInternal)); const valueLog = minLog + normalizedSliderValue * range; slider.actualValue = Math.pow(10, valueLog); } else { slider.actualValue = rawValue; } if (!isFinite(slider.actualValue)) { slider.actualValue = logScale ? slider.logMinVal : safeMin; } } function updateDisplayAndTriggerCallback() { const currentSlider = document.getElementById(sliderId); const currentValueDisplay = document.getElementById(valueId); if (!currentSlider || !currentValueDisplay) return; try { calculateActualValue(); const valToFormat = slider.actualValue; let displayVal; if (typeof valToFormat !== 'number' || !isFinite(valToFormat)) { displayVal = "NaN"; } else if (logScale && Math.abs(valToFormat) > 1e-9 && Math.abs(valToFormat) < 0.01) { displayVal = valToFormat.toExponential(fixedDigits); } else if (Math.abs(valToFormat) < 1 && fixedDigits > 0 && Math.abs(valToFormat) > 1e-12) { const numDigits = Math.max(fixedDigits, Math.ceil(-Math.log10(Math.abs(valToFormat))) + 1); displayVal = valToFormat.toFixed(Math.min(numDigits, 6)); } else if (Math.abs(valToFormat) < 100 && fixedDigits > 0) { displayVal = valToFormat.toFixed(fixedDigits); } else { displayVal = valToFormat.toFixed(Math.max(0, fixedDigits)); } currentValueDisplay.textContent = displayVal; if (typeof callback === 'function') { callback(); } } catch (e) { console.error("Error updating slider", sliderId, e); currentValueDisplay.textContent = "Error"; } } const initialValueAttr = slider.getAttribute('value'); let initialActualValue = initialValueAttr ? parseFloat(initialValueAttr) : (logScale ? slider.logMinVal : safeMin); if (logScale) { if (!isFinite(initialActualValue) || initialActualValue < slider.logMinVal || initialActualValue > slider.logMaxVal) { initialActualValue = slider.logMinVal; } const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; let initialSliderPos = 0; if (range > 0 && initialActualValue > 0 && isFinite(range)) { const valueLog = Math.log10(initialActualValue); initialSliderPos = Math.round(((valueLog - minLog) / range) * 100); } slider.min = "0"; slider.max = "100"; slider.step = "1"; slider.value = initialSliderPos; } else { if (!isFinite(initialActualValue) || initialActualValue < safeMin || initialActualValue > safeMax) initialActualValue = safeMin; slider.min = safeMin.toString(); slider.max = safeMax.toString(); const range = safeMax - safeMin; let step = (range / 100); if (range > 0) { const magnitude = Math.pow(10, Math.floor(Math.log10(step))); step = Math.max(1e-6, magnitude / 10); } else { step = 1e-6; } slider.step = step.toExponential(1); slider.value = initialActualValue; } slider.oninput = updateDisplayAndTriggerCallback; calculateActualValue(); updateDisplayAndTriggerCallback(); }
         function getPlotDimensions(plotDivId, margin) { const plotDiv = document.getElementById(plotDivId); if (!plotDiv) { throw new Error(`Plot container #${plotDivId} not found.`); } const width = plotDiv.clientWidth; const height = plotDiv.clientHeight; if (!width || !height || width <= 0 || height <= 0) { throw new Error(`Plot container #${plotDivId} has invalid dimensions: ${width}x${height}.`); } const plotWidth = width - margin.left - margin.right; const plotHeight = height - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) { throw new Error(`Plot area for #${plotDivId} invalid after margins: ${plotWidth}x${plotHeight}`); } return { containerWidth: width, containerHeight: height, plotWidth, plotHeight }; }
-        // Prepares SVG canvas, returns D3 group element and dimensions
         function setupPlotArea(targetId, margin, isDirectSvg = false) { let svg, g; let containerWidth, containerHeight; if (isDirectSvg) { svg = d3.select(`#${targetId}`); if (svg.empty()) throw new Error(`Target SVG #${targetId} not found.`); containerWidth = parseFloat(svg.attr("width")) || 400; containerHeight = parseFloat(svg.attr("height")) || 200; svg.selectAll("g").remove(); g = svg.append("g").attr("id", `${targetId}-plot-group`).attr("class", "d3-plot"); } else { const plotDiv = document.getElementById(targetId); if (!plotDiv) throw new Error(`Plot container #${targetId} not found.`); containerWidth = plotDiv.clientWidth; containerHeight = plotDiv.clientHeight; if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <= 0) { throw new Error(`Plot container #${targetId} has invalid dimensions: ${containerWidth}x${containerHeight}.`); } svg = d3.select(plotDiv).select("svg"); if (svg.empty()) { svg = d3.select(plotDiv).append("svg"); } svg.attr("width", "100%").attr("height", "100%").attr("viewBox", `0 0 ${containerWidth} ${containerHeight}`).attr("preserveAspectRatio", "xMidYMid meet"); svg.selectAll("*").remove(); g = svg.append("g").attr("class", "d3-plot"); } g.attr("transform", `translate(${margin.left},${margin.top})`); const plotWidth = containerWidth - margin.left - margin.right; const plotHeight = containerHeight - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) throw new Error(`Plot area for #${targetId} invalid after margins: ${plotWidth}x${plotHeight}`); const dims = { containerWidth, containerHeight, plotWidth, plotHeight }; return { g, dims }; }
-        // Draws X and Y axes (optional right Y axis) with labels
         function drawAxes(g, xScale, yScaleLeft, yScaleRight, dims, margin, labels) { g.append("g").attr("class", "x axis").attr("transform", `translate(0,${dims.plotHeight})`).call(d3.axisBottom(xScale).ticks(labels.xTicks || 5).tickFormat(labels.xFormat || d3.format(".1f"))); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight + margin.bottom - (labels.xOffset || 5)).text(labels.x || "X Axis").attr("class", "plot-label").attr("text-anchor", "middle"); g.append("g").attr("class", "y axis").call(d3.axisLeft(yScaleLeft).ticks(labels.yLeftTicks || 5).tickFormat(labels.yLeftFormat || d3.format(".1f"))).attr("stroke", labels.yLeftColor || null); g.append("text").attr("transform", "rotate(-90)").attr("y", -margin.left + (labels.yLeftOffset || 10)).attr("x", -dims.plotHeight / 2).text(labels.yLeft || "Left Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yLeftColor || 'currentColor'); if (yScaleRight && labels.yRight) { g.append("g").attr("class", "y axis").attr("transform", `translate(${dims.plotWidth},0)`).call(d3.axisRight(yScaleRight).ticks(labels.yRightTicks || 5).tickFormat(labels.yRightFormat || d3.format(".1f"))).attr("stroke", labels.yRightColor || null); g.append("text").attr("transform", "rotate(90)").attr("y", -dims.plotWidth - margin.right + (labels.yRightOffset || 15)).attr("x", dims.plotHeight / 2).text(labels.yRight || "Right Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yRightColor || 'currentColor'); } }
-        // Draws a line on the plot using provided data, generator, and class
         function drawLine(g, plotData, lineGenerator, cssClass) { g.append("path").datum(plotData).attr("class", `line ${cssClass} d3-plot`).attr("d", lineGenerator).attr("fill", "none").attr("stroke-width", 2); }
-        // Displays an error message within a plot area
         function displayPlotError(targetId, message = "Error rendering plot.", isDirectSvg = false) { try { const margin = { top: 10, right: 10, bottom: 10, left: 10 }; const { g, dims } = setupPlotArea(targetId, margin, isDirectSvg); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight / 2).text(message).style("font-size", "10px").attr("fill", "red").attr("text-anchor", "middle"); } catch (e) { console.error(`Failed to display error in target ${targetId}: ${e.message}`); } }
-
-        // --- Kept Interactive App Implementations ---
 
         /** Fig 1: Renders the conceptual dilational response plot */
         function renderDilationalResponsePlot() {
@@ -636,6 +389,41 @@
                      g.append("line").attr("x1", xScale(maxStrainTime)).attr("y1", yPosArrow).attr("x2", xScale(maxStrainTime)).attr("y2", dims.plotHeight).attr("stroke", "grey").attr("stroke-dasharray", "2 2");
                  }
             } catch (error) { displayErrorOnce(`Fig 1 Plot Error: ${error.message}.`); }
+        }
+
+        /** 3.1 Surface Waves: Updates the plot of E' and E'' vs. log frequency */
+        function updateWaveDampingPlot() {
+            const plotDivId = "wave-damping-plot"; const context = "Wave Damping Plot";
+            try {
+                const E_inf_slider = document.getElementById('elasticModulusWave'); const tau_slider = document.getElementById('relaxationTimeWave');
+                if (!E_inf_slider || !tau_slider || typeof E_inf_slider.actualValue === 'undefined' || typeof tau_slider.actualValue === 'undefined') { throw new Error("Wave slider elements not found or not initialized."); }
+                const E_inf = E_inf_slider.actualValue; const tau = tau_slider.actualValue; if (typeof E_inf !== 'number' || isNaN(E_inf) || typeof tau !== 'number' || isNaN(tau) || tau <= 0) { throw new Error(`Invalid slider values`); }
+                const margin = {top: 20, right: 50, bottom: 30, left: 40}; const { g, dims } = setupPlotArea(plotDivId, margin);
+                const logFreqMin = -4, logFreqMax = 4; const numPoints = 100;
+                const plotData = d3.range(numPoints + 1).map(i => { const logWt = logFreqMin + (i / numPoints) * (logFreqMax - logFreqMin); const wt = Math.pow(10, logWt); if (!isFinite(wt) || wt <= 0) return { logWt, E_prime: null, E_double_prime: null }; const denominator = 1 + wt**2; const safeDenominator = Math.max(1e-12, denominator); const E_double_prime = E_inf * wt / safeDenominator; const E_prime = E_inf * wt**2 / safeDenominator; return { logWt, E_prime: isFinite(E_prime) ? E_prime : null, E_double_prime: isFinite(E_double_prime) ? E_double_prime : null }; }).filter(d => isFinite(d.logWt)); if (plotData.length < 2) throw new Error("Not enough valid data points.");
+                const xScale = d3.scaleLinear().domain([logFreqMin, logFreqMax]).range([0, dims.plotWidth]); const yMax = Math.max(1, E_inf) * 1.1; const yScale = d3.scaleLinear().domain([0, yMax]).range([dims.plotHeight, 0]).nice();
+                drawAxes(g, xScale, yScale, null, dims, margin, { x: "Log₁₀(ωτ)", xOffset: 5, yLeft: "Modulus (mN/m)", yLeftOffset: 10 });
+                const lineGen = (yAccessor) => d3.line().x(d => xScale(d.logWt)).y(d => yScale(d[yAccessor])).defined(d => d[yAccessor] !== null && isFinite(xScale(d.logWt)) && isFinite(yScale(d[yAccessor])));
+                drawLine(g, plotData, lineGen('E_prime'), 'elastic-line'); drawLine(g, plotData, lineGen('E_double_prime'), 'viscous-line');
+                g.append("line").attr("x1", xScale(0)).attr("y1", 0).attr("x2", xScale(0)).attr("y2", dims.plotHeight).attr("stroke", "grey").attr("stroke-dasharray", "2 2"); g.append("text").attr("x", xScale(0)).attr("y", -5).text(`ωτ=1`).attr("font-size", "9px").attr("text-anchor", "middle"); g.append("rect").attr("x", dims.plotWidth + 5).attr("y", 0).attr("width", 10).attr("height", 2).attr("fill", "#3b82f6"); g.append("text").attr("x", dims.plotWidth + 20).attr("y", 5).text("E'").style("font-size", "10px"); g.append("rect").attr("x", dims.plotWidth + 5).attr("y", 15).attr("width", 10).attr("height", 2).attr("fill", "#14b8a6"); g.append("text").attr("x", dims.plotWidth + 20).attr("y", 20).text("E''").style("font-size", "10px");
+            } catch (error) { console.error(`Error updating ${context}:`, error); displayPlotError(plotDivId, `Wave Plot Error: ${error.message}`); }
+        }
+
+        /** 3.2 Langmuir Trough: Updates the plot of Pi and E' vs. Area/molecule */
+        function updateLangmuirPlot() {
+            const plotDivId = "langmuir-plot-svg"; const context = "Langmuir Plot";
+            let errorDisplayed = false; const displayErrorOnce = (message) => { if (!errorDisplayed) { console.error(`Error updating ${context}:`, message); displayPlotError(plotDivId, message); errorDisplayed = true; } };
+            try {
+                const phaseSelect = document.getElementById('monolayerPhase'); if (!phaseSelect) throw new Error("Phase select element not found."); const phase = phaseSelect.value || 'LE';
+                const margin = {top: 20, right: 40, bottom: 30, left: 40}; const { g, dims } = setupPlotArea(plotDivId, margin);
+                 const areaPoints = d3.range(100, 15, -0.5); const areaData = areaPoints; if (!Array.isArray(areaData) || areaData.length < 3) throw new Error("Failed to generate sufficient areaData."); const isotherms = { 'G': a => 0.5 * Math.exp(-(a - 80) / 50), 'LE': a => Math.max(0, 15 * (1 - (a - 20) / 60)), 'LC': a => Math.max(0, 5 + 40 * Math.exp(-(a - 20) / 5)), 'S': a => Math.max(0, 10 + 100 * Math.exp(-(a - 18) / 2)) }; const piData = areaData.map(a => isotherms[phase](a)); if (!piData || piData.length !== areaData.length || piData.some(p => !isFinite(p))) throw new Error("Failed to calculate Pi data."); const EData = []; for (let i = 0; i < areaData.length; i++) { if (i === 0 || i === areaData.length - 1) { EData.push(0); continue; } const piNext = piData[i+1]; const piPrev = piData[i-1]; const areaNext = areaData[i+1]; const areaPrev = areaData[i-1]; const currentArea = areaData[i]; if (![piNext, piPrev, areaNext, areaPrev, currentArea].every(v => typeof v === 'number' && isFinite(v))) { EData.push(EData[i-1] || 0); continue; } const dPi = piNext - piPrev; const dArea = areaNext - areaPrev; if (Math.abs(dArea) < 1e-9) { EData.push(EData[i-1] || 0); } else { const modulus = -currentArea * (dPi / dArea); EData.push((!isNaN(modulus) && isFinite(modulus)) ? Math.max(0, modulus) : 0); } } if (EData.length !== areaData.length || EData.some(e => !isFinite(e))) throw new Error("Failed to calculate E' data.");
+                 const plotData = areaData.map((a, i) => ({ area: a, pi: piData[i], E: EData[i] })).filter(d => isFinite(d.area) && isFinite(d.pi) && isFinite(d.E)); if (plotData.length < 2) throw new Error("Not enough valid plot points.");
+                const areaExtent = d3.extent(plotData, d => d.area); const piExtent = d3.extent(plotData, d => d.pi); const EExtent = d3.extent(plotData, d => d.E); if (areaExtent.some(v => !isFinite(v)) || piExtent.some(v => !isFinite(v)) || EExtent.some(v => !isFinite(v))) throw new Error("Invalid data extents."); if(areaExtent[1] <= areaExtent[0]) areaExtent[1] = areaExtent[0] + 1; if(piExtent[1] <= piExtent[0]) piExtent[1] = piExtent[0] + 0.1; if(EExtent[1] <= EExtent[0]) EExtent[1] = EExtent[0] + 1; const xScale = d3.scaleLinear().domain(areaExtent).range([dims.plotWidth, 0]); const yPiMax = Math.max(10, piExtent[1] * 1.1); const yEMax = Math.max(50, EExtent[1] * 1.1); const yPiScale = d3.scaleLinear().domain([0, yPiMax]).range([dims.plotHeight, 0]).nice(); const yEScale = d3.scaleLinear().domain([0, yEMax]).range([dims.plotHeight, 0]).nice();
+                drawAxes(g, xScale, yPiScale, yEScale, dims, margin, { x: "Area / molecule (Å²)", xOffset: 5, yLeft: "Π (mN/m)", yLeftColor: "#3b82f6", yLeftOffset: 10, yRight: "E' (mN/m)", yRightColor: "#ef4444", yRightOffset: 15 });
+                const lineGen = (yScaleAccessor, yProp) => d3.line().x(d => xScale(d.area)).y(d => yScaleAccessor(d[yProp])).defined(d => d[yProp] !== null && isFinite(d[yProp]) && isFinite(xScale(d.area)) && isFinite(yScaleAccessor(d[yProp])));
+                drawLine(g, plotData, lineGen(yPiScale, 'pi'), 'pressure-line'); g.select(".pressure-line").attr("stroke", "#3b82f6");
+                drawLine(g, plotData, lineGen(yEScale, 'E'), 'elastic-line'); g.select(".elastic-line").attr("stroke-dasharray", "3 3").attr("stroke", "#ef4444");
+            } catch (error) { displayErrorOnce(`Langmuir Plot Error: ${error.message}`); }
         }
 
          /** Renders the plot for OSDIR: Speed vs. Tension */
@@ -670,7 +458,7 @@
                 const gamma0 = gamma0_mNm / 1000; const E_plus_G = E_plus_G_mNm / 1000; const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60;
                 const tubeWidth = parseFloat(elements.svgTube.attr("width")) || 300; const tubeHeight = parseFloat(elements.svgTube.attr("height")) || 50; const tubeRadius_visual = tubeHeight / 2 - 10; const dropMaxHeight_visual = tubeRadius_visual * 1.6; const delta_rho = 100; const dropVolume = 1e-9; const oscillation_freq_hz = 0.1; const omega_osc = oscillation_freq_hz * 2 * Math.PI; const speed_amplitude_frac = 0.05;
                 osdirStartTime = Date.now();
-                function animateOSDIRDrop() { /* Animation loop */
+                function animateOSDIRDrop() {
                      if (!osdirStartTime) return;
                       try {
                          const elapsed = (Date.now() - osdirStartTime) / 1000; const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed)); if (current_omega_rot <= 1e-6) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
@@ -687,27 +475,25 @@
         }
 
         // --- Initialization Function ---
-        // Sets up sliders only for the active interactive elements
         function setupAllSliders() {
-            // console.log("Setting up sliders..."); // Optional log
             try {
                 setupSlider('fig1PhaseSlider', 'fig1PhaseValue', { fixedDigits: 0, callback: renderDilationalResponsePlot });
                 setupSlider('fig1FreqSlider', 'fig1FrequencyValue', { fixedDigits: 1, callback: renderDilationalResponsePlot });
+                setupSlider('elasticModulusWave', 'elasticModulusWaveValue', { fixedDigits: 0, callback: updateWaveDampingPlot });
+                setupSlider('relaxationTimeWave', 'relaxationTimeWaveValue', { fixedDigits: 4, logScale: true, callback: updateWaveDampingPlot });
+                const monolayerSelect = document.getElementById('monolayerPhase'); if (monolayerSelect) { monolayerSelect.onchange = updateLangmuirPlot; }
                 setupSlider('staticTensionOSD_d', 'staticTensionOSDValue_d', { fixedDigits: 3, logScale: true, callback: updateOSDIRApp_d });
                 setupSlider('combinedModulusOSD_d', 'combinedModulusOSDValue_d', { fixedDigits: 1, callback: updateOSDIRApp_d });
                 setupSlider('meanSpeedOSD_d', 'meanSpeedOSDValue_d', { fixedDigits: 0, callback: updateOSDIRApp_d });
-                // console.log("Slider setup complete."); // Optional log
             } catch (error) { console.error("Error setting up sliders:", error); }
         }
 
         // Renders plots for ACTIVE apps initially
         function renderAllPlotsInitial() {
-             // console.log("Performing initial render of active plots..."); // Optional log
-             const initialRenderFunctions = [ renderDilationalResponsePlot, updateOSDIRApp_d ];
+             const initialRenderFunctions = [ renderDilationalResponsePlot, updateWaveDampingPlot, updateLangmuirPlot, updateOSDIRApp_d ];
              initialRenderFunctions.forEach(renderFunc => {
                  try { renderFunc(); } catch (e) { console.error(`Error during initial call to ${renderFunc.name}:`, e); }
              });
-             // console.log("Initial plot updates attempted."); // Optional log
          }
 
         // Sets up smooth scrolling for navigation links
@@ -720,7 +506,7 @@
                         const targetElement = document.querySelector(targetId);
                         if(targetElement) {
                             const elementPosition = targetElement.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset - 76; // Match nav sticky top
+                            const offsetPosition = elementPosition + window.pageYOffset - 76;
                             window.scrollTo({ top: offsetPosition, behavior: "smooth" });
                         } else { console.warn("Smooth scroll target not found:", targetId); }
                     });
@@ -732,336 +518,4 @@
 
 </body>
 </html>
-/* Section 2: Overview Table */}
-        <section id="measurement-techniques-overview" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">2. Overview of Dilational Measurement Techniques</h2>
-            <p>Various experimental methods probe the dilational response (\(E^*\)) of interfaces. Key techniques, their principles, and typical operating ranges are summarized below.</p>
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full">
-                    <thead><tr><th>Method</th><th>Deformation Principle</th><th>Typical Modulus</th><th>Approx. Freq. Range (Hz)</th><th>Approx. \(\gamma\) Range (mN/m)</th><th>Key Strengths</th><th>Key Limitations & Considerations</th></tr></thead>
-                    <tbody><tr class="category-row"><td colspan="7">Primary Dilational Rheology Methods</td></tr><tr><td>Oscillating Barrier</td><td>Mechanical Area Change (Insoluble Monolayer)</td><td>\(E^*\)</td><td>$10^{-3} - 1$</td><td>\(> \sim 10\)</td><td>Direct area control (insoluble)</td><td>Insoluble only, leakage, non-uniform strain, low frequency.</td></tr><tr><td>Surface Waves (Capillary/Longitudinal)</td><td>Wave Propagation (Area Changes + Shear)</td><td>\(E^*\) (via model)</td><td>$10 - 10^5$</td><td>\(> \sim 10\)</td><td>Access to high frequencies</td><td>Complex theory/setup, indirect measurement, model-dependent.</td></tr><tr><td>Oscillating Pendant Drop (OPD)</td><td>Volume Oscillation -> Area Change (Drop Shape Analysis)</td><td>\(E^*\)</td><td>$10^{-3} - 2$</td><td>\( \sim 1 - 72\)</td><td>Widely applicable, commercial</td><td>\(\gamma > 1\) limit, assumes axisymmetry & Y-L validity, hydrodynamics/inertia.</td></tr><tr><td>Capillary Pressure</td><td>Volume Oscillation -> Pressure Change (Small Drop/Bubble)</td><td>\(E^*\)</td><td>$10^{-2} - 1$</td><td>\( \sim 1 - 72\)</td><td>Good for small spherical interfaces</td><td>Difficult deformation control, low frequency, radius accuracy crucial, assumes sphere.</td></tr><tr><td>Oscillating Spinning Drop (OSDIR)</td><td>Rotational Speed Oscillation -> Area Change (Elongated Drop)</td><td>\(E+G\) (approx.)</td><td>$10^{-2} - 0.3$</td><td>$10^{-4} - 10$</td><td>Unique for Ultra-low \(\gamma\)</td><td>Measures combined modulus, complex flow, low frequency, requires elongation, Vonnegut approx.</td></tr><tr class="category-row"><td colspan="7">Advanced/Specialized Methods</td></tr><tr><td>AFM Thermal Fluctuation</td><td>Passive Thermal Fluctuations</td><td>\(E^*, G^*\) (via model)</td><td>$10^2 - 10^4$</td><td>\(> \sim 10\)</td><td>Non-invasive, microscale, high freq.</td><td>Complex spectral analysis, model-dependent, specialized setup.</td></tr><tr><td>Microtensiometer / Microbutton</td><td>Microscale Area/Shear Deformations</td><td>\(E^*, G^*\)</td><td>Varies</td><td>Varies</td><td>Small volumes, potentially combined</td><td>Device specific, complex fabrication/operation, calibration.</td></tr></tbody>
-                </table>
-                <p class="text-xs text-gray-500 mt-2">Note: Ranges and limitations are indicative and depend heavily on the specific instrument, system studied, and underlying theoretical model used for analysis.</p>
-            </div>
-            <div class="key-concept mt-6">
-                <strong>Technique Selection:</strong> Choosing an appropriate method depends critically on the system's interfacial tension, the frequency range of interest, the nature of the interface (e.g., presence of insoluble films, particles), required sensitivity, and importantly, a thorough understanding of the technique's inherent assumptions and potential artifacts.
-            </div>
-        </section>
 
-        {/* Section 3: Dilational Methods (Static Figures Only, except OSDIR) */}
-        <section id="dilational-methods" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">3. Common Dilational Rheology Methods</h2>
-            <p>Below are conceptual illustrations and summaries of frequently used techniques.</p>
-
-            {/* 3.1 Surface Waves */}
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.1 Surface Wave Methods</h3>
-            <p class="text-sm mb-3">Analyze wave propagation/damping influenced by \(E^*\), \(\gamma\), bulk properties (\(\rho, \eta\)), and transport kinetics. Requires complex hydrodynamic models.</p>
-            <figure>
-                 <svg id="fig2-wave-setup" width="450" height="250" viewBox="0 0 450 250" aria-labelledby="fig2-title"><title id="fig2-title">Longitudinal Wave Setup Schematic</title><rect x="10" y="100" width="430" height="100" class="geometry-fill" stroke="black" /><line x1="10" y1="150" x2="440" y2="150" class="interface-line" /><rect x="10" y="151" width="430" height="49" class="liquid-fill" opacity="0.5" /><text x="225" y="145" class="schematic-text" text-anchor="middle">Interface</text><text x="225" y="175" class="schematic-text" text-anchor="middle">Bulk Liquid</text><text x="225" y="125" class="schematic-text" text-anchor="middle">Upper Phase</text><rect x="30" y="130" width="30" height="40" class="geometry-fill geometry-stroke" /><line x1="45" y1="130" x2="45" y2="80" class="geometry-stroke" /><text x="45" y="75" class="schematic-text" text-anchor="middle">Generator</text><rect x="390" y="130" width="30" height="40" class="geometry-fill geometry-stroke" /><line x1="405" y1="130" x2="405" y2="50" class="geometry-stroke" /><line x1="405" y1="50" x2="350" y2="30" class="geometry-stroke" /><rect x="330" y="15" width="40" height="30" class="geometry-fill geometry-stroke" /><text x="350" y="10" class="schematic-text" text-anchor="middle">Detector</text><path d="M 60 150 C 120 140, 180 160, 240 150 C 300 140, 360 160, 420 150" fill="none" stroke="red" stroke-dasharray="3 2"/><text x="240" y="170" class="schematic-text" text-anchor="middle" fill="red">Wave</text></svg>
-                 <figcaption class="caption">Figure 2: Conceptual schematic of a surface wave measurement setup.</figcaption>
-            </figure>
-             <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Access to high frequencies (\(10 - 10^5\) Hz).</li><li>Probes fast relaxation processes.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Experimentally complex.</li><li>Interpretation heavily model-dependent.</li><li>Difficult to deconvolve \(E'\) and \(E''\).</li><li>Mainly for low-viscosity liquids.</li></ul></div></div>
-
-            {/* 3.2 Oscillating Barrier */}
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.2 Oscillating Barrier Method</h3>
-            <p class="text-sm mb-3">Primarily for <strong>insoluble monolayers</strong>. Barriers change area \(A\), measure surface pressure change \(\Delta \Pi\) to calculate \(E^*\).</p>
-            <figure>
-                 <svg id="fig3-langmuir" width="400" height="150" viewBox="0 0 400 150" aria-labelledby="fig3-langmuir-title"><title id="fig3-langmuir-title">Langmuir Trough Schematic</title><rect x="10" y="50" width="380" height="80" class="geometry-fill" stroke="black" /><rect x="10" y="70" width="380" height="60" class="liquid-fill" opacity="0.5" /><line x1="10" y1="70" x2="390" y2="70" class="interface-line" /><text x="200" y="65" class="schematic-text" text-anchor="middle">Interface</text><rect id="barrier-left" x="50" y="45" width="10" height="90" class="geometry-fill geometry-stroke" /><rect id="barrier-right" x="340" y="45" width="10" height="90" class="geometry-fill geometry-stroke" /><line x1="55" y1="40" x2="85" y2="10" class="arrow-stroke" marker-end="url(#arrowhead)" /><line x1="345" y1="40" x2="315" y2="10" class="arrow-stroke" marker-end="url(#arrowhead)" /><text x="200" y="20" class="schematic-text" text-anchor="middle">Barriers ($\Delta A$)</text><rect x="200" y="70" width="1" height="20" stroke="red" stroke-width="1" /><line x1="200.5" y1="70" x2="200.5" y2="30" stroke="black" /><rect x="180" y="20" width="40" height="20" class="geometry-fill geometry-stroke" /><text x="200" y="34" class="schematic-text" text-anchor="middle">Balance ($\Delta \Pi$)</text></svg>
-                 <figcaption class="caption">Figure 3: Conceptual schematic of an oscillating barrier Langmuir trough.</figcaption>
-            </figure>
-             <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Direct area control for insoluble films.</li><li>Allows study of 2D phase behavior.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Insoluble/slowly relaxing systems only.</li><li>Assumes uniform compression.</li><li>Risk of film leakage.</li><li>Low frequency (\(< 1\) Hz).</li></ul></div></div>
-
-            {/* 3.3 Oscillating Pendant Drop */}
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.3 Oscillating Pendant Drop (OPD)</h3>
-            <p class="text-sm mb-3">Oscillates drop volume, analyzes shape via Young-Laplace equation to get \(A(t)\) and \(\gamma(t)\), yielding \(E^*\).</p>
-            <figure>
-                 <svg id="fig4-opd-schematic-static" width="150" height="150" viewBox="0 0 50 75" aria-labelledby="fig4-static-title">
-                     <title id="fig4-static-title">Pendant Drop Schematic (Static)</title>
-                     <rect class="needle-tip" x="17.5" y="0" width="15" height="20"/>
-                     <path class="pendant-drop" d="M 25 20 C 15 20, 10 35, 10 50 C 10 65, 15 70, 25 70 C 35 70, 40 65, 40 50 C 40 35, 35 20, 25 20 Z"/>
-                 </svg>
-                 <figcaption class="caption">Figure 4: Oscillating Pendant Drop (OPD) setup schematic.</figcaption>
-            </figure>
-            <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Widely used, commercially available.</li><li>Applicable to many systems.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Requires \(\gamma \gtrsim 1 \, mN/m\).</li><li>Assumes axisymmetry & Y-L validity.</li><li>Accuracy sensitive to image quality/fitting.</li><li>Limited frequency (\(< 2\) Hz).</li></ul></div></div>
-
-            {/* 3.4 Capillary Pressure */}
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.4 Capillary Pressure Tensiometry</h3>
-            <p class="text-sm mb-3">Measures pressure difference \(\Delta P\) across a small, near-spherical interface. Oscillates volume/area, relates dynamic \(\Delta P\) to \(E^*\) via Laplace equation (\(\Delta P = 2\gamma/R\)).</p>
-            <figure>
-                 <svg id="fig5-cap-pressure" width="400" height="150" viewBox="0 0 400 150" aria-labelledby="fig5-title"><title id="fig5-title">Capillary Pressure Method Schematics</title><text x="75" y="15" class="schematic-label" text-anchor="middle">Config 1</text><rect x="10" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="40" y="38" class="schematic-text" text-anchor="middle">Piezo</text><rect x="80" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="110" y="38" class="schematic-text" text-anchor="middle">Pressure</text><line x1="70" y1="35" x2="80" y2="35" stroke="black" /> <rect x="65" y="50" width="20" height="40" class="capillary-tube" /><circle cx="75" cy="110" r="20" class="oil-fill interface-line" /><text x="40" y="70" class="schematic-text">Liquid 1</text><text x="110" y="70" class="schematic-text">Liquid 2</text><text x="275" y="15" class="schematic-label" text-anchor="middle">Config 2</text><rect x="210" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="240" y="38" class="schematic-text" text-anchor="middle">Pressure</text><rect x="310" y="20" width="60" height="30" class="geometry-fill geometry-stroke" /><text x="340" y="38" class="schematic-text" text-anchor="middle">Piezo</text><rect x="240" y="50" width="20" height="40" class="capillary-tube" /> <rect x="300" y="50" width="20" height="40" class="capillary-tube" /><circle cx="310" cy="110" r="20" class="gas-fill interface-line" /><text x="210" y="70" class="schematic-text">Liquid</text><text x="310" y="70" class="schematic-text">Gas Bubble</text></svg>
-                 <figcaption class="caption">Figure 5: Conceptual schematics of capillary pressure method configurations.</figcaption>
-            </figure>
-             <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Suitable for small, spherical interfaces.</li><li>Direct pressure-tension link (Laplace).</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Difficult control/measurement.</li><li>Requires sensitive pressure transducer.</li><li>Assumes perfect sphericity.</li><li>Low frequency (\(< 1\) Hz).</li><li>Requires \(\gamma \gtrsim 1 \, mN/m\).</li></ul></div></div>
-
-            {/* 3.5 Oscillating Spinning Drop */}
-            <h3 class="text-xl font-semibold mt-6 mb-2">3.5 Oscillating Spinning Drop (OSDIR)</h3>
-            <p class="text-sm mb-3">Unique technique for <strong>low and ultra-low \(\gamma\)</strong> systems. Modulates rotation speed \(\omega_{rot}\) of an elongated drop, calculates dynamic \(\gamma(t)\) from shape (often via Vonnegut approx.), yielding a combined modulus, approximately \(E+G\).</p>
-            <figure>
-                 <svg id="fig6-osdir" width="400" height="150" viewBox="0 0 400 150" aria-labelledby="fig6-title"><title id="fig6-title">Oscillating Spinning Drop Schematic</title><rect x="10" y="50" width="380" height="50" rx="25" ry="25" class="capillary-tube" /><text x="200" y="45" class="schematic-text" text-anchor="middle">Rotating Capillary ($\omega_{rot}(t)$)</text><rect id="osdir-drop-rect-static" x="50" y="60" width="300" height="30" rx="15" ry="15" class="spinning-drop" /><text x="200" y="78" class="schematic-text" text-anchor="middle">Elongated Drop</text><path d="M 30 40 A 30 30 0 0 1 60 25" fill="none" class="arrow-stroke" marker-end="url(#arrowhead)" /><path d="M 370 110 A 30 30 0 0 1 340 125" fill="none" class="arrow-stroke" marker-end="url(#arrowhead)" /><text x="200" y="130" class="schematic-text" text-anchor="middle">Rotation Axis</text></svg>
-                 <figcaption class="caption">Figure 6: Schematic of an elongated drop inside a rotating capillary (OSDIR).</figcaption>
-            </figure>
-            <div class="grid md:grid-cols-2 gap-4 mt-3 text-sm"><div><h4 class="text-base font-semibold mb-1 text-sky-700">Key Strengths:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Unique for (ultra-)low $\gamma$.</li><li>Crucial near HLD=0.</li></ul></div><div><h4 class="text-base font-semibold mb-1 text-sky-700">Critical Limitations:</h4><ul class="list-disc list-inside space-y-1 pl-4"><li>Measures combined modulus (\(E+G\)).</li><li>Requires elongation (\(L/R > 4\)) for Vonnegut validity.</li><li>Complex flow field.</li><li>Low frequency (\(< 0.3\) Hz).</li></ul></div></div>
-            {/* Interactive App for OSDIR */}
-            <div class="interactive-container mt-4">
-                <h4 class="text-lg font-semibold mb-2">Conceptual Illustration: OSDIR Dynamics</h4>
-                <p class="instructional-text">Visualize how drop length changes conceptually with rotation speed and tension (Vonnegut scaling: \(L \propto V / R^2 \propto V \omega_{rot}^{4/3} / \gamma^{2/3}\)), and how tension responds to speed oscillations based on \(E+G\).</p>
-                <p class="approximation-note">Note: Drop shape uses Vonnegut approximation (valid for L/R > 4). Tension response is conceptual. Measures combined E+G modulus.</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                    <div><label for="staticTensionOSD_d">Mean Tension ($\gamma$, mN/m):</label><input type="range" id="staticTensionOSD_d" name="staticTensionOSD_d" min="0.001" max="1" value="0.01" step="0.001"><div class="output-box"><span id="staticTensionOSDValue_d">0.010</span> mN/m</div></div>
-                    <div><label for="combinedModulusOSD_d">Combined Modulus (E+G, mN/m):</label><input type="range" id="combinedModulusOSD_d" name="combinedModulusOSD_d" min="0" max="20" value="2" step="0.1"><div class="output-box"><span id="combinedModulusOSDValue_d">2.0</span> mN/m</div></div>
-                    <div><label for="meanSpeedOSD_d">Mean Speed ($\omega_{rot}$, rpm):</label><input type="range" id="meanSpeedOSD_d" name="meanSpeedOSD_d" min="3000" max="8000" value="4000" step="100"><div class="output-box"><span id="meanSpeedOSDValue_d">4000</span> rpm</div></div>
-                </div>
-                <div class="visualization-box flex-col items-center">
-                    <svg id="osdir-tube-svg_d" width="300" height="50" viewBox="0 0 300 50" class="mb-4"><rect x="0" y="10" width="300" height="30" rx="15" ry="15" class="capillary-tube" /><rect id="osdir-drop-rect_d" x="50" y="15" width="200" height="20" rx="10" ry="10" class="spinning-drop" /></svg>
-                    <div id="osdir-plot_d" class="w-full h-48 d3-plot"></div>
-                    <p class="text-xs mt-2 caption">Conceptual Response: Speed (cyan) vs. Tension (indigo).</p>
-                    <button id="osdir-restart-button" class="text-xs mt-1 px-2 py-1">Restart Oscillation</button>
-                </div>
-            </div>
-        </section>
-
-        {/* Section 4: Recent Advances (Static Figures Only) */}
-        <section id="recent-advances" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">4. Recent Advances in Dilational Methods</h2>
-            <p>Research continues to refine techniques and extend capabilities, including probing thermal fluctuations and using microfluidic platforms.</p>
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.1 Probing Thermal Fluctuations</h3>
-            <p class="text-sm">Techniques like AFM or DWS analyze naturally occurring thermal capillary waves to probe interfacial viscoelasticity (\(E^*, G^*\)) non-invasively, especially at high frequencies.</p>
-            <figure>
-                 <svg id="fig7-afm-setup" width="400" height="200" viewBox="0 0 400 200" aria-labelledby="fig7-title"><title id="fig7-title">AFM Probing Bubble Fluctuations</title><rect x="50" y="150" width="300" height="30" class="geometry-fill" stroke="black" /><text x="200" y="170" class="schematic-text" text-anchor="middle">Substrate</text><rect x="50" y="50" width="300" height="100" class="liquid-fill" opacity="0.5" /><text x="60" y="70" class="schematic-text">Liquid</text><path d="M 150 150 Q 150 100 200 100 Q 250 100 250 150 Z" class="gas-fill interface-line" /><text x="200" y="130" class="schematic-text" text-anchor="middle">Bubble</text><rect x="190" y="20" width="20" height="50" class="geometry-fill geometry-stroke" /><text x="220" y="45" class="schematic-text">AFM Head</text><line x1="200" y1="70" x2="200" y2="90" stroke="black" /> <path d="M 200 90 L 180 100 L 220 100 Z" fill="#fca5a5" /> <text x="200" y="85" class="schematic-text" text-anchor="middle">Tip</text><path d="M 180 100 C 190 102, 210 102, 220 100" fill="none" stroke="red" stroke-dasharray="1 1" /><text x="200" y="115" class="schematic-text" text-anchor="middle" fill="red">Fluctuations</text></svg>
-                 <figcaption class="caption">Figure 7: Conceptual schematic of AFM probing thermal fluctuations.</figcaption>
-            </figure>
-
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.2 Microfluidic and Combined Techniques</h3>
-            <p class="text-sm">Miniaturized platforms allow measurements on small volumes, potentially combining probes for \(E^*\) and \(G^*\).</p>
-            <figure>
-                 <svg id="fig8-microtensiometer" width="350" height="200" viewBox="0 0 350 200" aria-labelledby="fig8-title"><title id="fig8-title">Microtensiometer Schematic</title><rect x="50" y="50" width="250" height="100" class="geometry-fill" stroke="black" /><text x="175" y="45" class="schematic-text" text-anchor="middle">Chamber</text><rect x="165" y="150" width="20" height="40" class="capillary-tube" /><line x1="175" y1="150" x2="175" y2="120" stroke="#64748b" /><circle cx="175" cy="100" r="20" class="oil-fill interface-line" /><text x="200" y="135" class="schematic-text">Micro-drop</text><rect x="10" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="25" y="130" class="schematic-text" text-anchor="middle">Piezo</text><line x1="40" y1="100" x2="50" y2="100" stroke="black" /><rect x="310" y="80" width="30" height="40" class="geometry-fill geometry-stroke" /><text x="325" y="130" class="schematic-text" text-anchor="middle">Sensor</text><line x1="300" y1="100" x2="310" y2="100" stroke="black" /></svg>
-                 <figcaption class="caption">Figure 8: Conceptual schematic of a microtensiometer platform.</figcaption>
-            </figure>
-
-            <h3 class="text-xl font-semibold mt-4 mb-2">4.3 High-Frequency Oscillating Drops</h3>
-            <p class="text-sm">Analyzing higher-order shape oscillation modes aims to extract viscoelastic information at higher frequencies (\(10 - 200\) Hz).</p>
-        </section>
-
-        {/* Section 5: Applications */}
-        <section id="applications" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">5. Applications and Significance</h2>
-            <p>Dilational interfacial rheology (\(E^*\)) is critical for understanding phenomena governed by interfacial area changes, particularly emulsion and foam stability.</p>
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.1 Emulsion and Foam Stability</h3>
-            <p>Thin film stability against rupture depends strongly on \(E^*\). High elasticity (\(E'\)), often from the Gibbs-Marangoni effect resisting film thinning, and high viscosity (\(E''\)), dissipating disruptive energy, generally lead to enhanced stability. The interfacial structure dictates the magnitude and frequency dependence of these moduli.</p>
-            <p>A key exception occurs near <strong class="text-sky-700">optimum formulation (HLD=0)</strong> in surfactant-oil-water systems. Ultra-low \(\gamma\) and rapid surfactant exchange minimize tension gradients, causing \(E^* \approx 0\). This lack of dilational resistance facilitates rapid film rupture and minimum emulsion stability.</p>
-            <figure>
-                 <svg id="fig9-hld-summary-app" width="500" height="300" viewBox="0 0 500 300" aria-labelledby="fig9-app-title"><title id="fig9-app-title">Properties vs HLD (Conceptual)</title><g transform="translate(50, 30)"><defs><clipPath id="clip-app"><rect width="400" height="220"></rect></clipPath></defs><line x1="0" y1="220" x2="400" y2="220" stroke="black" /><line x1="200" y1="0" x2="200" y2="220" stroke="black" stroke-dasharray="4 2" /><text x="200" y="235" text-anchor="middle" font-size="12">HLD=0</text><text x="50" y="235" text-anchor="middle" font-size="12">HLD < 0</text><text x="350" y="235" text-anchor="middle" font-size="12">HLD > 0</text><text x="405" y="225" font-size="12">HLD</text><text x="200" y="-5" text-anchor="middle" font-size="12">Property Value</text><path d="M 0 50 C 100 50, 150 180, 200 180 S 300 50, 400 50" stroke="#3b82f6" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="180" y="175" fill="#3b82f6" font-size="12">IFT ($\gamma$) Min</text><path d="M 0 100 C 100 100, 150 210, 200 210 S 300 100, 400 100" stroke="#ef4444" fill="none" stroke-width="2" clip-path="url(#clip-app)" /><text x="30" y="120" fill="#ef4444" font-size="12">Stability Max</text><text x="180" y="205" fill="#ef4444" font-size="12">Min</text><path d="M 0 80 C 100 80, 150 190, 200 190 S 300 80, 400 80" stroke="#22c55e" fill="none" stroke-width="2" stroke-dasharray="5 3" clip-path="url(#clip-app)" /><text x="300" y="70" fill="#22c55e" font-size="12">Modulus ($E^*$) Min</text></g></svg>
-                 <figcaption class="caption">Figure 9: Conceptual schematic showing minima in \(\gamma\), stability, and \(E^*\) near HLD=0.</figcaption>
-            </figure>
-
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.2 Asphaltenes and Crude Oil Emulsions</h3>
-            <p>Water-in-crude oil emulsion stability is often governed by rigid, viscoelastic films formed by asphaltene adsorption and aggregation. High dilational moduli (\(E^*\)) reflect the film's resistance to area changes, significantly hindering coalescence.</p>
-
-            <h3 class="text-xl font-semibold mt-4 mb-2">5.3 Enhanced Oil Recovery (EOR)</h3>
-            <p>Achieving ultra-low \(\gamma\) near HLD=0 is crucial for mobilizing trapped oil. The associated minimum in \(E^*\) is thought to aid oil passage through pore throats. OSDIR is vital for characterizing these systems.</p>
-        </section>
-
-        {/* Section 6: Conclusions */}
-        <section id="conclusions" class="mb-12 pt-4 p-6 rounded-lg shadow-lg section-bg-white dynamic-content">
-            <h2 class="text-2xl font-bold">6. Conclusions</h2>
-            <p>Dilational interfacial rheology (\(E^* = E' + iE''\)) provides indispensable information about the dynamic response of fluid interfaces to area changes, governing the behavior of emulsions, foams, and other multiphase systems.</p>
-            <ul class="list-disc list-inside space-y-1 pl-4">
-                <li>\(E^*\) is fundamentally linked to interfacial tension gradients (\(\nabla \gamma\)) driven by surface concentration changes (Gibbs-Marangoni effect).</li>
-                <li>Measured \(E^*\) exhibits strong frequency (\(\omega\)) dependence related to characteristic molecular relaxation times.</li>
-                <li>Diverse experimental techniques probe \(E^*\), each possessing distinct advantages and critical limitations. Method selection requires careful consideration.</li>
-                <li>High \(E'\) generally enhances emulsion/foam stability, except near optimum formulation (HLD=0) where rapid surfactant dynamics lead to minimal \(E^*\) and instability.</li>
-                <li>The dilational properties of complex films (e.g., asphaltenes) are intrinsically tied to their interfacial structure, network formation, and aging processes.</li>
-            </ul>
-            <p>A comprehensive understanding requires integrating knowledge of the underlying physics, molecular interactions, and a critical evaluation of the chosen experimental methodology.</p>
-        </section>
-
-        <footer class="mt-16 pt-8 border-t border-sky-200 text-sm text-sky-700">
-            <p>
-                This page presents interactive concepts based primarily on the scientific review:
-                <br>
-                Marquez, R.; Salager, J.-L. Measurement Techniques for Interfacial Rheology of Surfactant, Asphaltene, and Protein-Stabilized Interfaces in Emulsions and Foams.
-                <em>Colloids and Interfaces</em> <strong class="text-sky-800">2025</strong>, <em>9</em>(1), 14.
-                <br>
-                DOI: <a href="https://doi.org/10.3390/colloids9010014" target="_blank" rel="noopener">
-                    https://doi.org/10.3390/colloids9010014
-                </a>
-            </p>
-             <p class="mt-4 text-center text-xs text-sky-600">Interactive Interfacial Rheology Concepts</p>
-        </footer>
-
-    </main>
-
-    <script>
-        // Global Animation IDs & Data (Only for active apps)
-        let osdirAnimationId_d = null;
-        let osdirStartTime = null;
-        let osdirTimeData = [];
-
-        // General Setup on DOM Load
-        document.addEventListener('DOMContentLoaded', function () {
-            // console.log("DOM Content Loaded. Starting Final Setup..."); // Optional console log
-            try {
-                setupAllSliders();
-                renderAllPlotsInitial();
-                setupSmoothScrolling();
-                // Explicitly typeset MathJax after initial content/setup, with a slight delay
-                if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
-                    setTimeout(() => { // Ensure DOM is fully ready
-                        MathJax.typesetPromise().then(() => {
-                            // console.log("MathJax typesetting complete."); // Optional console log
-                        }).catch((err) => console.error('MathJax typesetting failed:', err));
-                    }, 0);
-                } else {
-                    console.warn("MathJax or typesetPromise not available.");
-                }
-                // console.log("Initial Setup Completed Successfully."); // Optional console log
-            } catch (error) {
-                console.error("CRITICAL ERROR during initial setup:", error);
-                alert("A critical error occurred during page initialization.");
-            }
-        });
-
-        // --- Helper Function: Setup Slider ---
-        // Sets up interactive range sliders, handling linear/log scales and callbacks.
-        function setupSlider(sliderId, valueId, options = {}) {
-            const slider = document.getElementById(sliderId); const valueDisplay = document.getElementById(valueId); if (!slider || !valueDisplay) { return; }
-            const { fixedDigits = 1, logScale = false, callback = null } = options; const minAttr = parseFloat(slider.min); const maxAttr = parseFloat(slider.max); let safeMin = isNaN(minAttr) ? (logScale ? 1e-6 : 0) : (logScale ? Math.max(1e-9, minAttr) : minAttr); let safeMax = isNaN(maxAttr) ? safeMin * (logScale ? 1000 : 100) : (logScale ? Math.max(safeMin * 1.1, maxAttr) : Math.max(safeMin + 1e-9, maxAttr)); if (safeMax <= safeMin) { safeMax = safeMin * (logScale ? 10 : 2); if (safeMax <= safeMin) safeMax = safeMin + 1; } slider.logMinVal = safeMin; slider.logMaxVal = safeMax;
-            function calculateActualValue() { const rawValue = parseFloat(slider.value); if (logScale) { const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; const sliderMinInternal = 0; const sliderMaxInternal = 100; const sliderRangeInternal = sliderMaxInternal - sliderMinInternal; if (sliderRangeInternal <= 0 || !isFinite(range) || range <= 0) { slider.actualValue = slider.logMinVal; return; } const normalizedSliderValue = Math.max(0, Math.min(1, (rawValue - sliderMinInternal) / sliderRangeInternal)); const valueLog = minLog + normalizedSliderValue * range; slider.actualValue = Math.pow(10, valueLog); } else { slider.actualValue = rawValue; } if (!isFinite(slider.actualValue)) { slider.actualValue = logScale ? slider.logMinVal : safeMin; } }
-            function updateDisplayAndTriggerCallback() { const currentSlider = document.getElementById(sliderId); const currentValueDisplay = document.getElementById(valueId); if (!currentSlider || !currentValueDisplay) return; try { calculateActualValue(); const valToFormat = slider.actualValue; let displayVal; if (typeof valToFormat !== 'number' || !isFinite(valToFormat)) { displayVal = "NaN"; } else if (logScale && Math.abs(valToFormat) > 1e-9 && Math.abs(valToFormat) < 0.01) { displayVal = valToFormat.toExponential(fixedDigits); } else if (Math.abs(valToFormat) < 1 && fixedDigits > 0 && Math.abs(valToFormat) > 1e-12) { const numDigits = Math.max(fixedDigits, Math.ceil(-Math.log10(Math.abs(valToFormat))) + 1); displayVal = valToFormat.toFixed(Math.min(numDigits, 6)); } else if (Math.abs(valToFormat) < 100 && fixedDigits > 0) { displayVal = valToFormat.toFixed(fixedDigits); } else { displayVal = valToFormat.toFixed(Math.max(0, fixedDigits)); } currentValueDisplay.textContent = displayVal; if (typeof callback === 'function') { callback(); } } catch (e) { console.error("Error updating slider", sliderId, e); currentValueDisplay.textContent = "Error"; } }
-            const initialValueAttr = slider.getAttribute('value'); let initialActualValue = initialValueAttr ? parseFloat(initialValueAttr) : (logScale ? slider.logMinVal : safeMin); if (logScale) { if (!isFinite(initialActualValue) || initialActualValue < slider.logMinVal || initialActualValue > slider.logMaxVal) { initialActualValue = slider.logMinVal; } const minLog = Math.log10(slider.logMinVal); const maxLog = Math.log10(slider.logMaxVal); const range = maxLog - minLog; let initialSliderPos = 0; if (range > 0 && initialActualValue > 0 && isFinite(range)) { const valueLog = Math.log10(initialActualValue); initialSliderPos = Math.round(((valueLog - minLog) / range) * 100); } slider.min = "0"; slider.max = "100"; slider.step = "1"; slider.value = initialSliderPos; } else { if (!isFinite(initialActualValue) || initialActualValue < safeMin || initialActualValue > safeMax) initialActualValue = safeMin; slider.min = safeMin.toString(); slider.max = safeMax.toString(); const range = safeMax - safeMin; let step = (range / 100); if (range > 0) { const magnitude = Math.pow(10, Math.floor(Math.log10(step))); step = Math.max(1e-6, magnitude / 10); } else { step = 1e-6; } slider.step = step.toExponential(1); slider.value = initialActualValue; } slider.oninput = updateDisplayAndTriggerCallback; calculateActualValue(); updateDisplayAndTriggerCallback();
-        }
-
-        // --- D3 Plotting Helper Functions ---
-        // Gets plot dimensions safely
-        function getPlotDimensions(plotDivId, margin) { const plotDiv = document.getElementById(plotDivId); if (!plotDiv) { throw new Error(`Plot container #${plotDivId} not found.`); } const width = plotDiv.clientWidth; const height = plotDiv.clientHeight; if (!width || !height || width <= 0 || height <= 0) { throw new Error(`Plot container #${plotDivId} has invalid dimensions: ${width}x${height}.`); } const plotWidth = width - margin.left - margin.right; const plotHeight = height - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) { throw new Error(`Plot area for #${plotDivId} invalid after margins: ${plotWidth}x${plotHeight}`); } return { containerWidth: width, containerHeight: height, plotWidth, plotHeight }; }
-        // Prepares SVG canvas, returns D3 group element and dimensions
-        function setupPlotArea(targetId, margin, isDirectSvg = false) { let svg, g; let containerWidth, containerHeight; if (isDirectSvg) { svg = d3.select(`#${targetId}`); if (svg.empty()) throw new Error(`Target SVG #${targetId} not found.`); containerWidth = parseFloat(svg.attr("width")) || 400; containerHeight = parseFloat(svg.attr("height")) || 200; svg.selectAll("g").remove(); g = svg.append("g").attr("id", `${targetId}-plot-group`).attr("class", "d3-plot"); } else { const plotDiv = document.getElementById(targetId); if (!plotDiv) throw new Error(`Plot container #${targetId} not found.`); containerWidth = plotDiv.clientWidth; containerHeight = plotDiv.clientHeight; if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <= 0) { throw new Error(`Plot container #${targetId} has invalid dimensions: ${containerWidth}x${containerHeight}.`); } svg = d3.select(plotDiv).select("svg"); if (svg.empty()) { svg = d3.select(plotDiv).append("svg"); } svg.attr("width", "100%").attr("height", "100%").attr("viewBox", `0 0 ${containerWidth} ${containerHeight}`).attr("preserveAspectRatio", "xMidYMid meet"); svg.selectAll("*").remove(); g = svg.append("g").attr("class", "d3-plot"); } g.attr("transform", `translate(${margin.left},${margin.top})`); const plotWidth = containerWidth - margin.left - margin.right; const plotHeight = containerHeight - margin.top - margin.bottom; if (plotWidth <= 0 || plotHeight <= 0) throw new Error(`Plot area for #${targetId} invalid after margins: ${plotWidth}x${plotHeight}`); const dims = { containerWidth, containerHeight, plotWidth, plotHeight }; return { g, dims }; }
-        // Draws X and Y axes (optional right Y axis) with labels
-        function drawAxes(g, xScale, yScaleLeft, yScaleRight, dims, margin, labels) { g.append("g").attr("class", "x axis").attr("transform", `translate(0,${dims.plotHeight})`).call(d3.axisBottom(xScale).ticks(labels.xTicks || 5).tickFormat(labels.xFormat || d3.format(".1f"))); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight + margin.bottom - (labels.xOffset || 5)).text(labels.x || "X Axis").attr("class", "plot-label").attr("text-anchor", "middle"); g.append("g").attr("class", "y axis").call(d3.axisLeft(yScaleLeft).ticks(labels.yLeftTicks || 5).tickFormat(labels.yLeftFormat || d3.format(".1f"))).attr("stroke", labels.yLeftColor || null); g.append("text").attr("transform", "rotate(-90)").attr("y", -margin.left + (labels.yLeftOffset || 10)).attr("x", -dims.plotHeight / 2).text(labels.yLeft || "Left Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yLeftColor || 'currentColor'); if (yScaleRight && labels.yRight) { g.append("g").attr("class", "y axis").attr("transform", `translate(${dims.plotWidth},0)`).call(d3.axisRight(yScaleRight).ticks(labels.yRightTicks || 5).tickFormat(labels.yRightFormat || d3.format(".1f"))).attr("stroke", labels.yRightColor || null); g.append("text").attr("transform", "rotate(90)").attr("y", -dims.plotWidth - margin.right + (labels.yRightOffset || 15)).attr("x", dims.plotHeight / 2).text(labels.yRight || "Right Y Axis").attr("class", "plot-label").attr("text-anchor", "middle").attr("fill", labels.yRightColor || 'currentColor'); } }
-        // Draws a line on the plot using provided data, generator, and class
-        function drawLine(g, plotData, lineGenerator, cssClass) { g.append("path").datum(plotData).attr("class", `line ${cssClass} d3-plot`).attr("d", lineGenerator).attr("fill", "none").attr("stroke-width", 2); }
-        // Displays an error message within a plot area
-        function displayPlotError(targetId, message = "Error rendering plot.", isDirectSvg = false) { try { const margin = { top: 10, right: 10, bottom: 10, left: 10 }; const { g, dims } = setupPlotArea(targetId, margin, isDirectSvg); g.append("text").attr("x", dims.plotWidth / 2).attr("y", dims.plotHeight / 2).text(message).style("font-size", "10px").attr("fill", "red").attr("text-anchor", "middle"); } catch (e) { console.error(`Failed to display error in target ${targetId}: ${e.message}`); } }
-
-        // --- Kept Interactive App Implementations ---
-
-        /** Fig 1: Renders the conceptual dilational response plot */
-        function renderDilationalResponsePlot() {
-            const plotSvgId = "fig1-dilational-response"; const context = "Fig 1 Plot";
-            let errorDisplayed = false; const displayErrorOnce = (message) => { if (!errorDisplayed) { console.error(`Error rendering ${context}:`, message); displayPlotError(plotSvgId, message, true); errorDisplayed = true; } };
-            try {
-                const phaseSlider = document.getElementById('fig1PhaseSlider'); const freqSlider = document.getElementById('fig1FreqSlider');
-                 if (!phaseSlider || !freqSlider || typeof phaseSlider.actualValue === 'undefined' || typeof freqSlider.actualValue === 'undefined') { throw new Error("Figure 1 sliders not found or not initialized."); }
-                const phase_deg = phaseSlider.actualValue; const freq_hz = freqSlider.actualValue; if (typeof phase_deg !== 'number' || !isFinite(phase_deg) || typeof freq_hz !== 'number' || !isFinite(freq_hz) || freq_hz <= 0) { throw new Error(`Invalid Fig 1 slider values`); }
-                const phi_rad = phase_deg * Math.PI / 180; const omega = freq_hz * 2 * Math.PI; const margin = {top: 10, right: 40, bottom: 30, left: 40}; const { g, dims } = setupPlotArea(plotSvgId, margin, true);
-                const amplitude = 0.1; const modulus_example = 20; const num_cycles = 1.5; const t_end = num_cycles / freq_hz; const t_start = 0; const num_points = 100; const t = d3.range(t_start, t_end, (t_end - t_start) / num_points);
-                const plotData = t.map(time => ({ time: time, strain: amplitude * Math.sin(omega * time), tension: modulus_example * amplitude * Math.sin(omega * time + phi_rad) })).filter(d => isFinite(d.time) && isFinite(d.strain) && isFinite(d.tension)); if (plotData.length < 2) throw new Error("Not enough valid data points.");
-                 const xScale = d3.scaleLinear().domain([t_start, t_end]).range([0, dims.plotWidth]); const strainExtent = [-amplitude * 1.2, amplitude * 1.2]; const tensionExtent = d3.extent(plotData, d => d.tension); const tensionBuffer = Math.max(0.1, Math.abs(tensionExtent[1] - tensionExtent[0]) * 0.1); const tensionDomain = [tensionExtent[0] - tensionBuffer, tensionExtent[1] + tensionBuffer]; if (tensionDomain[1] <= tensionDomain[0]) tensionDomain[1] = tensionDomain[0] + 0.2; const yStrainScale = d3.scaleLinear().domain(strainExtent).range([dims.plotHeight, 0]); const yTensionScale = d3.scaleLinear().domain(tensionDomain).range([dims.plotHeight, 0]).nice();
-                drawAxes(g, xScale, yStrainScale, yTensionScale, dims, margin, { x: "Time (s)", yLeft: "Strain (ΔlnA)", yLeftColor: "#22c55e", yLeftTicks: 3, yLeftFormat: d3.format(".2f"), yRight: "Stress (Δγ)", yRightColor: "#6366f1", yRightTicks: 3, yRightFormat: d3.format(".1f") });
-                 const lineGenerator = (yScaleAccessor, yProp) => d3.line().x(d => xScale(d.time)).y(d => yScaleAccessor(d[yProp])).defined(d => d[yProp] !== null && isFinite(xScale(d.time)) && isFinite(yScaleAccessor(d[yProp])));
-                drawLine(g, plotData, lineGenerator(yStrainScale, 'strain'), 'area-line'); drawLine(g, plotData, lineGenerator(yTensionScale, 'tension'), 'tension-line');
-                 const maxStrainTime = (Math.PI / 2) / omega; const maxTensionTime = (Math.PI / 2 - phi_rad) / omega;
-                 if (maxTensionTime >= t_start && maxTensionTime < maxStrainTime && maxStrainTime <= t_end) {
-                     const t_mid = (maxStrainTime + maxTensionTime) / 2; const strain_mid = amplitude * Math.sin(omega * t_mid); const yPosArrow = yStrainScale(strain_mid);
-                     g.append("line").attr("x1", xScale(maxTensionTime)).attr("y1", yPosArrow).attr("x2", xScale(maxStrainTime)).attr("y2", yPosArrow).attr("stroke", "black").attr("marker-start", "url(#arrowhead)").attr("marker-end", "url(#arrowhead)");
-                     g.append("text").attr("x", xScale(t_mid)).attr("y", yPosArrow - 5).text("φ").attr("font-size", "12px").attr("text-anchor", "middle");
-                     g.append("line").attr("x1", xScale(maxTensionTime)).attr("y1", yPosArrow).attr("x2", xScale(maxTensionTime)).attr("y2", dims.plotHeight).attr("stroke", "grey").attr("stroke-dasharray", "2 2");
-                     g.append("line").attr("x1", xScale(maxStrainTime)).attr("y1", yPosArrow).attr("x2", xScale(maxStrainTime)).attr("y2", dims.plotHeight).attr("stroke", "grey").attr("stroke-dasharray", "2 2");
-                 }
-            } catch (error) { displayErrorOnce(`Fig 1 Plot Error: ${error.message}.`); }
-        }
-
-         /** Renders the plot for OSDIR: Speed vs. Tension */
-         function renderOSDIRPlot(plotData, isError = false) {
-             const plotDivId = "osdir-plot_d"; const context = "OSDIR Plot";
-             try {
-                 const margin = {top: 10, right: 40, bottom: 30, left: 40}; const { g, dims } = setupPlotArea(plotDivId, margin);
-                 if (isError) { g.append("text").attr("x", dims.plotWidth/2).attr("y", dims.plotHeight/2).text("Error.").attr("text-anchor", "middle").attr("class", "plot-label").attr("fill", "red"); return; }
-                 if (!plotData || plotData.length < 2) { g.append("text").attr("x", dims.plotWidth/2).attr("y", dims.plotHeight/2).text("Initializing...").attr("text-anchor", "middle").attr("class", "plot-label"); return; }
-                 const validPlotData = plotData.filter(d => isFinite(d.time) && isFinite(d.speed) && isFinite(d.tension));
-                  if (validPlotData.length < 2) { g.append("text").attr("x", dims.plotWidth/2).attr("y", dims.plotHeight/2).text("No data").attr("text-anchor", "middle").attr("class", "plot-label"); return; }
-                 const timeExtent = d3.extent(validPlotData, d => d.time); const speedExtent = d3.extent(validPlotData, d => d.speed); const tensionExtent = d3.extent(validPlotData, d => d.tension);
-                 if (timeExtent.some(v => !isFinite(v)) || speedExtent.some(v => !isFinite(v)) || tensionExtent.some(v => !isFinite(v))) { throw new Error("Invalid data extents."); }
-                 if (timeExtent[1] <= timeExtent[0]) timeExtent[1] = timeExtent[0] + 1; if (speedExtent[1] <= speedExtent[0]) speedExtent[1] = speedExtent[0] + 1; if (tensionExtent[1] <= tensionExtent[0]) tensionExtent[1] = tensionExtent[0] + 0.001;
-                 const xScale = d3.scaleLinear().domain(timeExtent).range([0, dims.plotWidth]); const ySpeedScale = d3.scaleLinear().domain(speedExtent).range([dims.plotHeight, 0]).nice(); const yTensionScale = d3.scaleLinear().domain(tensionExtent).range([dims.plotHeight, 0]).nice();
-                 drawAxes(g, xScale, ySpeedScale, yTensionScale, dims, margin, { x: "Time (s)", xOffset: 5, yLeft: "Speed (rpm)", yLeftColor: "#06b6d4", yLeftFormat: d3.format(".0f"), yLeftOffset: 10, yRight: "Tension (mN/m)", yRightColor: "#6366f1", yRightFormat: d3.format(".3f"), yRightOffset: 15 });
-                 const lineGen = (yScaleAccessor, yProp) => d3.line().x(d => xScale(d.time)).y(d => yScaleAccessor(d[yProp])).defined(d => d[yProp] !== null && isFinite(xScale(d.time)) && isFinite(yScaleAccessor(d[yProp])));
-                 drawLine(g, validPlotData, lineGen(ySpeedScale, 'speed'), 'speed-line'); drawLine(g, validPlotData, lineGen(yTensionScale, 'tension'), 'tension-line');
-             } catch (error) { console.error(`Error rendering ${context}:`, error); displayPlotError(plotDivId, `OSDIR Plot Error: ${error.message}`); }
-          }
-
-        /** OSDIR: Updates drop shape, animation, and plot */
-        function updateOSDIRApp_d() {
-            const context = "OSDIR App"; if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; osdirStartTime = null; osdirTimeData = [];
-            const elements = { gamma0Slider: document.getElementById('staticTensionOSD_d'), EGSlider: document.getElementById('combinedModulusOSD_d'), speedSlider: document.getElementById('meanSpeedOSD_d'), svgTube: d3.select("#osdir-tube-svg_d"), plotDiv: document.getElementById('osdir-plot_d'), restartButton: document.getElementById('osdir-restart-button') };
-            try {
-                if (Object.values(elements).some(el => !el || (el.nodeName && el.nodeName === 'SELECT' && el.empty && el.empty())) || elements.svgTube.empty() ) { throw new Error("Missing required OSDIR elements."); }
-                const dropRect = elements.svgTube.select("#osdir-drop-rect_d"); if (dropRect.empty()) { throw new Error("Missing OSDIR drop rect element."); }
-                 if (typeof elements.gamma0Slider.actualValue === 'undefined' || typeof elements.EGSlider.actualValue === 'undefined' || typeof elements.speedSlider.actualValue === 'undefined') { throw new Error("OSDIR slider actualValue not initialized."); }
-                const gamma0_mNm = elements.gamma0Slider.actualValue; const E_plus_G_mNm = elements.EGSlider.actualValue; const omega_rot_mean_rpm = elements.speedSlider.actualValue;
-                if (isNaN(gamma0_mNm) || gamma0_mNm <= 0 || isNaN(E_plus_G_mNm) || isNaN(omega_rot_mean_rpm) || omega_rot_mean_rpm <= 0) { throw new Error("Invalid OSDIR slider values."); }
-                const gamma0 = gamma0_mNm / 1000; const E_plus_G = E_plus_G_mNm / 1000; const omega_rot_mean = omega_rot_mean_rpm * 2 * Math.PI / 60;
-                const tubeWidth = parseFloat(elements.svgTube.attr("width")) || 300; const tubeHeight = parseFloat(elements.svgTube.attr("height")) || 50; const tubeRadius_visual = tubeHeight / 2 - 10; const dropMaxHeight_visual = tubeRadius_visual * 1.6; const delta_rho = 100; const dropVolume = 1e-9; const oscillation_freq_hz = 0.1; const omega_osc = oscillation_freq_hz * 2 * Math.PI; const speed_amplitude_frac = 0.05;
-                osdirStartTime = Date.now();
-                function animateOSDIRDrop() { /* Animation loop */
-                     if (!osdirStartTime) return;
-                      try {
-                         const elapsed = (Date.now() - osdirStartTime) / 1000; const current_omega_rot = omega_rot_mean * (1 + speed_amplitude_frac * Math.sin(omega_osc * elapsed)); if (current_omega_rot <= 1e-6) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const R_approx_term = (4 * gamma0) / (delta_rho * current_omega_rot**2); if (!isFinite(R_approx_term) || R_approx_term <= 0) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; } const R_approx = Math.pow(R_approx_term, 1/3); if (!isFinite(R_approx) || R_approx <= 1e-9) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; } const L_approx = dropVolume / (Math.PI * R_approx**2); if (!isFinite(L_approx) || L_approx <= 0) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const R_mean_at_mean_speed_term = (4 * gamma0) / (delta_rho * omega_rot_mean**2); const R_mean_at_mean_speed = Math.pow(Math.max(1e-12, R_mean_at_mean_speed_term), 1/3); const L_mean_at_mean_speed = dropVolume / (Math.PI * Math.max(1e-9, R_mean_at_mean_speed)**2); const visual_L_scale_factor = (L_mean_at_mean_speed > 1e-9 && isFinite(L_mean_at_mean_speed)) ? (tubeWidth * 0.7) / L_mean_at_mean_speed : 1; const visual_L = Math.max(10, Math.min(tubeWidth * 0.98, L_approx * visual_L_scale_factor)); const visual_R = Math.min(dropMaxHeight_visual / 2, Math.max(1, R_approx * visual_L_scale_factor)); if (!isFinite(visual_L) || !isFinite(visual_R)) { osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop); return; }
-                         const x_pos = (tubeWidth - visual_L) / 2; dropRect.attr("x", x_pos).attr("y", tubeHeight / 2 - visual_R).attr("width", visual_L).attr("height", visual_R * 2).attr("rx", visual_R).attr("ry", visual_R);
-                         const strain_approx = speed_amplitude_frac * Math.sin(omega_osc * elapsed) * 2; const phi_rad_osdir_conceptual = Math.PI / 6; const tension_change_amp = Math.max(0.1, E_plus_G) * speed_amplitude_frac * 2; const current_gamma = gamma0 + tension_change_amp * Math.sin(omega_osc * elapsed + phi_rad_osdir_conceptual);
-                         if (elapsed <= (1 / oscillation_freq_hz) * 2.1) { osdirTimeData.push({ time: elapsed, speed: current_omega_rot * 60 / (2 * Math.PI), tension: Math.max(1e-4, current_gamma * 1000) }); } else { renderOSDIRPlot(osdirTimeData); cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; return; } osdirAnimationId_d = requestAnimationFrame(animateOSDIRDrop);
-                      } catch (animError) { console.error("Error during OSDIR animation:", animError); if (osdirAnimationId_d) cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; renderOSDIRPlot(null, true); }
-                }
-                animateOSDIRDrop(); renderOSDIRPlot(osdirTimeData);
-                elements.restartButton.onclick = () => { if (osdirAnimationId_d) { cancelAnimationFrame(osdirAnimationId_d); osdirAnimationId_d = null; } osdirStartTime = Date.now(); osdirTimeData = []; animateOSDIRDrop(); };
-            } catch (error) { console.error(`Error updating ${context}:`, error); renderOSDIRPlot(null, true); }
-        }
-
-        // --- Initialization Function ---
-        // Sets up sliders only for the active interactive elements
-        function setupAllSliders() {
-            // console.log("Setting up sliders..."); // Optional log
-            try {
-                setupSlider('fig1PhaseSlider', 'fig1PhaseValue', { fixedDigits: 0, callback: renderDilationalResponsePlot });
-                setupSlider('fig1FreqSlider', 'fig1FrequencyValue', { fixedDigits: 1, callback: renderDilationalResponsePlot });
-                setupSlider('staticTensionOSD_d', 'staticTensionOSDValue_d', { fixedDigits: 3, logScale: true, callback: updateOSDIRApp_d });
-                setupSlider('combinedModulusOSD_d', 'combinedModulusOSDValue_d', { fixedDigits: 1, callback: updateOSDIRApp_d });
-                setupSlider('meanSpeedOSD_d', 'meanSpeedOSDValue_d', { fixedDigits: 0, callback: updateOSDIRApp_d });
-                // console.log("Slider setup complete."); // Optional log
-            } catch (error) { console.error("Error setting up sliders:", error); }
-        }
-
-        // Renders plots for ACTIVE apps initially
-        function renderAllPlotsInitial() {
-             // console.log("Performing initial render of active plots..."); // Optional log
-             const initialRenderFunctions = [ renderDilationalResponsePlot, updateOSDIRApp_d ];
-             initialRenderFunctions.forEach(renderFunc => {
-                 try { renderFunc(); } catch (e) { console.error(`Error during initial call to ${renderFunc.name}:`, e); }
-             });
-             // console.log("Initial plot updates attempted."); // Optional log
-         }
-
-        // Sets up smooth scrolling for navigation links
-        function setupSmoothScrolling(){
-            try {
-                document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        if(targetElement) {
-                            const elementPosition = targetElement.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset - 76; // Match nav sticky top
-                            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                        } else { console.warn("Smooth scroll target not found:", targetId); }
-                    });
-                });
-            } catch (e) { console.error("Error setting up smooth scrolling:", e); }
-        }
-
-    </script>
-
-</body>
-</html>
