@@ -492,7 +492,7 @@
                          return value.toExponential(digits);
                     }
                     // Use fixed notation for reasonably sized numbers
-                    if (Math.abs(value) < 1000 || value === 0) {
+                    if (Math.abs(value) < 1000000 || value === 0) {
                          // Ensure digits is non-negative for toFixed
                          const nonNegativeDigits = Math.max(0, digits);
                          return value.toFixed(nonNegativeDigits);
